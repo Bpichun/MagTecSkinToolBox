@@ -1,0 +1,341 @@
+
+--- NEW SESSION: 10/10/2025 15:24:06 ---
+/Simulation/ServoBody/dofs.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/dofs.position = 0 0 1.5 0 0 0 1 0 0 1.5 0 0 0 1
+/Simulation/Articulation/ServoWheel/dofs.showObjectScale = 14
+/Simulation/Articulation/ServoWheel/dofs.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 11:45:32 ---
+//RequiredPlugin.pluginName = ["SofaPython3", "SoftRobots", "SoftRobots.Inverse"]
+
+--- NEW SESSION: 13/10/2025 13:08:22 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0.258799 0 0.965931 -13.2197 -5.46353 8.56164 -0.866966 0.355315 0.100789 0.334608
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 -2.18275e-05 0 4.5126 -1.72345 3.56095 -5.76455 -12.7343 1.99783
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -682669 -415369 -2.57575e+06 -1.20415e+07 -4.21499e+07 1.0483e+07 -1740.84 -1506.15 43019 3492.24 1434.27 191.535
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 15722.8 -36821.4 -1829.13 468136 78700.9 356473 -6280.69 743.379 80910.1 5443.95 1752.41 406.488
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 -2.18275e-05 0 4.5126 -1.72345 3.56095 -5.76455 -12.7343 1.99783
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:11:06 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0 0 1 -15 -5 1.5 0 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 -2.10014e-05 0 -2.27064 -0.825332 2.3314 -1.96321 6.81779 1.81828
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -682996 -415821 -2.57166e+06 -1.20593e+07 -4.20844e+07 1.05155e+07 -3887.37 -2190.36 31673.2 -1140.88 -3937.86 -412.346
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.externalForce = 
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 16876.2 -35804.3 4216.27 424906 166145 359280 -2641 -5268.47 50091.3 -1247.82 -5146.21 -607.054
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 -2.10014e-05 0 -2.27064 -0.825332 2.3314 -1.96321 6.81779 1.81828
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:13:12 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0.258799 0 0.965931 -13.1613 -5.23145 8.73269 -0.339915 -0.619652 0.703645 0.0733017
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 1.96267e-05 0 -5.6714 -0.857977 -1.52496 -2.96501 17.9129 1.51145
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -699662 -380313 -2.57109e+06 -1.24145e+07 -4.21301e+07 1.01359e+07 -372.977 -126.56 1545.66 -22.6247 13.1024 -4.38665
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = -35386.4 25604.4 -22867.2 -327389 -611810 -165191 1639.48 -218.51 -12100.5 554.253 -501.891 84.1579
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 1.96267e-05 0 -5.6714 -0.857977 -1.52496 -2.96501 17.9129 1.51145
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:14:36 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 -2.2191e-05 0 -7.0897 2.03562 -1.61313 5.70679 22.1995 1.75254
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -671820 -414926 -2.56812e+06 -1.2098e+07 -4.19812e+07 1.04687e+07 -1278.03 -12.2287 4903.47 -9.85969 18.2294 -2.52435
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 20380 -36927.7 16637 369370 351406 402910 1.75664 -541.96 -3515.87 179.96 -300.196 46.3641
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 -2.2191e-05 0 -7.0897 2.03562 -1.61313 5.70679 22.1995 1.75254
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:17:54 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+
+--- NEW SESSION: 13/10/2025 13:20:15 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 2.14456e-05 0 -3.31965 -1.97313 1.73535 -5.3999 9.89197 1.53458
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0.258799 0 0.965931 -13.2515 -5.27099 8.7657 -0.288579 -0.523701 0.781816 0.176703
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -681145 -383669 -2.58104e+06 -1.23678e+07 -4.2195e+07 1.00966e+07 -3395.83 -1839.87 22092.3 154.034 -2300.1 -167.879
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = -44682.2 37321 -23294 -323447 -629868 -369208 -4619.86 -3067.12 40566.2 183.19 -3706.3 -259.362
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 2.14456e-05 0 -3.31965 -1.97313 1.73535 -5.3999 9.89197 1.53458
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:32:07 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:40:14 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 0 0 1 -15 -5 1.5 0 0 0 1 -15 5 1.5 0 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 0.000271229 0 40.1569 36.6976 50.0579 -78.9312 60.139 5.8859 0 0 -784.8 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -1.98797e+06 -210901 -715169 -2.51221e+07 -2.9038e+07 1.04541e+07 21532.7 108192 757183 130433 -65672.3 5674.47 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.externalForce = 
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 3.03191e+06 -526612 -1.46916e+06 -3.23261e+06 2.23619e+07 8.48364e+06 136571 450578 1.73e+06 356424 -175140 17478.3 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 0.000271229 0 40.1569 36.6976 50.0579 -78.9312 60.139 5.8859 0 0 -784.8 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showObjectScale = 10
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+
+--- NEW SESSION: 13/10/2025 13:42:55 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 2.10157e-05 0 -2.43669 1.04701 0.584795 3.38601 7.27458 1.06145
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = -703195 -383252 -2.57793e+06 -1.23995e+07 -4.22837e+07 1.0192e+07 -1294.24 -207.698 8533.37 -298.258 -339.439 -53.4978
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = -34519.2 33320.7 -16212.9 -314074 -462334 -309905 -2155.9 -895.592 14724.1 -341.421 -560.779 -84.1002
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 2.10157e-05 0 -2.43669 1.04701 0.584795 3.38601 7.27458 1.06145
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showObjectScale = 1.5
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.velocity = -2.43669 1.04701 0.584795 3.38601 7.27458 1.06145 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = -1294.24 -207.698 8517.02 -298.258 -339.439 -53.4978 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = -2.43669 1.04701 0.584795 3.38601 7.27458 1.06145 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0 0 0 -63176.4 0 0 0
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 10
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = -0.621239 -2.62103 1.03542 -7.59653 1.5994 -0.00267292 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0
+
+--- NEW SESSION: 13/10/2025 13:45:19 ---
+/Simulation/freeCenter/dofs.velocity = 35.1142 -36.7298 -94.5089 -144.736 88.3596 0.778815 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = 233279 16924.5 -748387 136396 -28693 41867.8 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = 35.1142 -36.7298 -94.5089 -144.736 88.3596 0.778815 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0 0 0 -588.6 0 0 0
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 10
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = 7.62955 -47.7552 -208.218 13.7381 0.472963 6.84225 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0
+
+--- NEW SESSION: 14/10/2025 10:15:32 ---
+/Simulation/freeCenter/dofs.velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 10
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+--- NEW SESSION: 14/10/2025 10:25:48 ---
+/Simulation/freeCenter/dofs.velocity = -1.9929 -4.99199 -6.58359 -25.8524 4.84089 3.51024 0 0 -3335.4 0 0 0 -12.9133 -8.47146 2.12214 -27.5606 42.0378 0.0128897 0 0 -3335.4 0 0 0 0 0 -3335.4 0 0 0 0 0 -3335.4 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = -5028.03 -14745.9 22263.2 -4272.68 25.7586 -947.208 0 0 -16.35 0 0 0 -26649.6 -38980.8 64988.5 8195.43 -4634.56 580.661 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = -1.9929 -4.99199 -6.58359 -25.8524 4.84089 3.51024 0 0 -3335.4 0 0 0 -12.9133 -8.47146 2.12214 -27.5606 42.0378 0.0128897 0 0 -3335.4 0 0 0 0 0 -3335.4 0 0 0 0 0 -3335.4 0 0 0
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 10
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = -1.25481 -13.4585 -23.4416 -47.892 5.72077 0.0978098 0 0 -196.2 0 0 0 -8.21154 -5.39212 11.7446 -2.41418 3.66209 -0.000373599 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0 0 0 -196.2 0 0 0
+
+--- NEW SESSION: 14/10/2025 11:05:20 ---
+/Simulation/freeCenter/dofs.velocity = -0.870112 8.82906 16.8913 22.4743 -0.565392 3.5156 0 0 -3139.2 0 0 0 -4.70182 -3.07924 -9.62246 -25.1461 38.376 0.0131979 9.61242 -22.1165 -4.09199 -58.9252 -26.9447 3.55388 0 0 -3139.2 0 0 0 -5.59974 4.00803 -9.8212 28.414 39.6311 -0.0164721
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = -18202.8 18079.9 208621 -45176.9 4730.71 -4351.47 0 0 -16.35 0 0 0 -799.792 -971.312 959.01 4.19869 75.4955 78.6251 34143.6 -92359.4 93234.6 17035.7 3868.17 -2406.37 0 0 -16.35 0 0 0 -2840 2205.2 3061.79 66.7244 124.791 -27.8387
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = -0.870112 8.82906 16.8913 22.4743 -0.565392 3.5156 0 0 -3139.2 0 0 0 -4.70182 -3.07924 -9.62246 -25.1461 38.376 0.0131979 9.61242 -22.1165 -4.09199 -58.9252 -26.9447 3.55388 0 0 -3139.2 0 0 0 -5.59974 4.00803 -9.8212 28.414 39.6311 -0.0164721
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 10
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = -4.57179 -10.5241 27.4121 -40.7313 8.91095 -0.41337 0 0 -196.2 0 0 0 -2.5901 -1.82981 -9.74424 -21.2755 32.4815 0.0232191 9.36443 -18.1943 9.91675 -15.522 -10.354 -0.208755 0 0 -196.2 0 0 0 -3.49355 2.52312 -8.64142 21.9438 30.5954 -0.00284734
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 6.33867e-08 0 -0.870112 8.82906 16.8913 22.4743 -0.565392 3.5156 0 0 -3139.2 0 0 0 -4.70182 -3.07924 -9.62246 -25.1461 38.376 0.0131979 9.61242 -22.1165 -4.09199 -58.9252 -26.9447 3.55388 0 0 -3139.2 0 0 0 -5.59974 4.00803 -9.8212 28.414 39.6311 -0.0164721
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = 154585 5872.72 59084.2 183198 -1.93477e+06 918.092 -18202.8 18079.9 208637 -45176.9 4730.71 -4351.47 0 0 0 0 0 0 -799.792 -971.312 975.36 4.19869 75.4955 78.6251 34143.6 -92359.4 93250.9 17035.7 3868.17 -2406.37 0 0 0 0 0 0 -2840 2205.2 3078.14 66.7244 124.791 -27.8387
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = -51562.5 13013.7 -124240 73909.1 -2.00336e+06 -109967 -52476.5 -48767 402853 -65716.4 4678.87 -7993.97 0 0 0 0 0 0 13187.2 17703.8 -30805.5 1425.38 -3834.26 -1593.35 63954.4 -174644 204413 29389.2 5364.84 -4611.4 0 0 0 0 0 0 13003.3 -10550.9 -21592.8 -1134.98 -1813.6 202.695
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 6.33867e-08 0 -0.870112 8.82906 16.8913 22.4743 -0.565392 3.5156 0 0 -3139.2 0 0 0 -4.70182 -3.07924 -9.62246 -25.1461 38.376 0.0131979 9.61242 -22.1165 -4.09199 -58.9252 -26.9447 3.55388 0 0 -3139.2 0 0 0 -5.59974 4.00803 -9.8212 28.414 39.6311 -0.0164721
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+--- NEW SESSION: 14/10/2025 14:14:28 ---
+/Simulation/freeCenter/dofs.velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 4
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0 0 0 -16.35 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+--- NEW SESSION: 14/10/2025 15:21:52 ---
+/completeMesh/AllMesh.drawEdges = 1
+/completeMesh/AllMesh.drawTriangles = 1
+/completeMesh/AllMesh.drawQuads = 1
+/completeMesh/AllMesh.drawTetrahedra = 1
+/completeMesh/AllMesh.drawHexahedra = 1
+
+--- NEW SESSION: 14/10/2025 15:46:29 ---
+/completeMesh/AllMesh.drawEdges = 1
+/completeMesh/AllMesh.drawTriangles = 1
+/completeMesh/AllMesh.drawQuads = 1
+/completeMesh/AllMesh.drawTetrahedra = 1
+/completeMesh/AllMesh.drawHexahedra = 1
+
+--- NEW SESSION: 14/10/2025 15:47:25 ---
+/completeMesh/AllMesh.drawEdges = 1
+/completeMesh/AllMesh.drawTriangles = 1
+/completeMesh/AllMesh.drawQuads = 1
+/completeMesh/AllMesh.drawTetrahedra = 1
+/completeMesh/AllMesh.drawHexahedra = 1
+
+--- NEW SESSION: 14/10/2025 17:10:49 ---
+/completeMesh/AllMesh.drawEdges = 1
+/completeMesh/AllMesh.drawTriangles = 1
+/completeMesh/AllMesh.drawQuads = 1
+/completeMesh/AllMesh.drawTetrahedra = 1
+/completeMesh/AllMesh.drawHexahedra = 1
+
+--- NEW SESSION: 14/10/2025 17:11:49 ---
+/Simulation/freeCenter/dofs.velocity = 0.140743 0.0124969 0.196869 4.95037 -10.7452 -2.85507 -2.66555 1.11253 -2.21231 8.04665 14.7897 -2.27388 1.28726 4.15147 0.661485 9.02511 -2.80101 0.0947961 -0.131639 -2.35258 -1.1871 -11.6426 -0.0471092 1.16613 0.485488 -6.67299 0.821496 -32.9443 -1.01092 11.1311 -4.43813 -0.536072 3.19267 -2.53393 21.7768 0.00116367
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = -326.057 -451.063 566.716 32.4657 19.0656 -4.83545 -1738.03 700.194 1455.49 143.148 -144.681 425.587 -1174.35 1705.8 4082.47 -806.01 -500.972 -22.4412 -358.109 -3600.32 3570.73 151.566 -132.343 -117.701 170.58 -16309.9 21641.9 3723.11 2294.19 3780.48 -2891.53 6191.2 12990.3 -1093.14 -1241.98 348.165
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.free_velocity = 0.140743 0.0124969 0.196869 4.95037 -10.7452 -2.85507 -2.66555 1.11253 -2.21231 8.04665 14.7897 -2.27388 1.28726 4.15147 0.661485 9.02511 -2.80101 0.0947961 -0.131639 -2.35258 -1.1871 -11.6426 -0.0471092 1.16613 0.485488 -6.67299 0.821496 -32.9443 -1.01092 11.1311 -4.43813 -0.536072 3.19267 -2.53393 21.7768 0.00116367
+/Simulation/freeCenter/dofs.showObject = 1
+/Simulation/freeCenter/dofs.showObjectScale = 5
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.solution = -0.0844052 -0.0419053 0.0114568 -1.07605 2.33588 0.620969 -3.85915 1.39048 -4.64915 11.7501 21.5913 -3.33665 -0.509173 -0.493289 1.62301 -1.44161 1.22616 -0.000653007 0.790301 -5.45643 -4.47838 -25.8617 -3.45321 0.00832654 1.47843 -2.49866 4.13794 -2.70211 -0.0943375 0.922797 1.87339 0.20038 4.93487 1.20837 -10.3736 -0.0009202
+
+--- NEW SESSION: 14/10/2025 17:15:11 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showObjectScale = 14
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+
+--- NEW SESSION: 20/10/2025 14:57:04 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObjectScale = 10
+
+--- NEW SESSION: 20/10/2025 15:14:21 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawPoints = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawSize = 10
+
+--- NEW SESSION: 21/10/2025 10:08:13 ---
+/Simulation/Articulation/dofs.position = -1.50703e-06
+/Simulation/Articulation/dofs.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 -7.53514e-05 0 0.24328 -0.491834 -7.23529 1.44962 2.24821 0.648781 0.0149079 -0.000515699 -0.00506032 0.000897645 0.00637221 0.00173825 0.000528962 -0.000215077 -0.0035334 -0.00230181 0.000481156 -4.29658e-05 -0.00311949 0.0623525 -0.000471075 -0.00100264 -0.00137537 0.000495468 0.00468417 0.00377019 -0.00510827 0.000928175 0.00169718 -0.00126834 0.000217807 0.000249819 -0.0025347 -0.000959897 0.000152134 9.28383e-05
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 -7.53514e-07 0 1 -14.9951 -5.00984 1.35529 0.0144944 0.0224793 0.00648699 0.999621 0.000298158 -5.00001 1.4999 8.97645e-06 6.37221e-05 1.73825e-05 1 15 -5 1.49993 -2.30181e-05 4.81156e-06 -4.29658e-07 1 -15.0001 5.00125 1.49999 -1.00264e-05 -1.37537e-05 4.95468e-06 1 9.36833e-05 5.00008 1.4999 9.28175e-06 1.69718e-05 -1.26834e-05 1 15 5 1.49995 -9.59897e-06 1.52134e-06 9.28383e-07 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = 0 0 -107.291 0.247425 -1095.94 0 0 0 -0.489912 0.011137 -0.0429271 0 0 0 -0.685877 -0.0897847 0.0159061 0 0 0 -0.293947 0.0564834 0.012599 0 0 0 -0.489912 -0.0655744 0.0642539 0 0 0 -0.293947 -0.014895 -0.011846 0 0 0 -0.39193 0.0300425 -0.00564344 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 -7.53514e-05 0 0.24328 -0.491834 -7.23529 1.44962 2.24821 0.648781 0.0149079 -0.000515699 -0.00506032 0.000897645 0.00637221 0.00173825 0.000528962 -0.000215077 -0.0035334 -0.00230181 0.000481156 -4.29658e-05 -0.00311949 0.0623525 -0.000471075 -0.00100264 -0.00137537 0.000495468 0.00468417 0.00377019 -0.00510827 0.000928175 0.00169718 -0.00126834 0.000217807 0.000249819 -0.0025347 -0.000959897 0.000152134 9.28383e-05
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+
+--- NEW SESSION: 21/10/2025 14:29:06 ---
+/completeMesh/AllMesh.drawEdges = 1
+/completeMesh/AllMesh.drawHexahedra = 0
+/completeMesh/AllMesh.drawTriangles = 0
+/completeMesh/AllMesh.drawQuads = 1
+/completeMesh/AllMesh.drawTetrahedra = 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showObjectScale = 10
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+
+--- NEW SESSION: 21/10/2025 14:43:39 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+
+--- NEW SESSION: 21/10/2025 14:54:22 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/RigidifiedMesh.showColor = 1 0 0 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+
+--- NEW SESSION: 23/10/2025 16:15:52 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+
+--- NEW SESSION: 23/10/2025 16:30:25 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+
+--- NEW SESSION: 24/10/2025 11:39:01 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showObject = 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/DeformableMech.showColor = 1 1 1 1
+
+--- NEW SESSION: 24/10/2025 12:16:29 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/loader.headerSize = 81
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObject = 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObjectScale = 4
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.showColor = 0.2 0.898039 0.298039 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawPoints = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawEdges = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawSize = 4
+
+--- NEW SESSION: 24/10/2025 12:22:20 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawPoints = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawSize = 10
+
+--- NEW SESSION: 24/10/2025 14:16:38 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawPoints = 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFFSphereROI.drawSize = 10
+
+--- NEW SESSION: 24/10/2025 16:56:14 ---
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.position = 0 0 1.5 0 -2.94381e-06 0 1 -14.986 -5.13717 1.15433 0.0356949 -0.00168029 0.00380231 0.999354 0.000481586 -4.99984 1.49986 -1.25613e-05 8.09775e-05 3.01931e-05 1 15 -5 1.49996 -1.76021e-07 2.19734e-06 1.51894e-07 1 -14.9999 4.99695 1.4999 0.000453354 4.17313e-05 5.84442e-05 1 -7.32473e-05 4.99998 1.49995 1.54881e-06 -7.64225e-06 3.41433e-06 1 15 5 1.49996 -4.84874e-07 8.29199e-07 3.3857e-07 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.velocity = 0 0 0 0 -4.05163e-06 0 0.0239139 0.0517297 -0.251426 0.0343097 -0.0124949 0.00897104 0.000377115 -2.75679e-05 -5.25615e-05 1.25947e-05 0.000118236 2.16862e-06 4.89873e-06 -2.63886e-07 1.07648e-07 1.27595e-07 1.29948e-06 1.65921e-07 -0.000173061 0.00254564 2.91637e-05 -0.000766992 -0.000113805 -6.22271e-05 0.000147199 0.000109335 -2.44203e-05 -2.69093e-05 4.2721e-05 1.89098e-06 2.93271e-06 9.19157e-07 5.11811e-08 -2.69936e-07 8.14143e-07 -4.12105e-08
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.force = 1687.8 -90747.1 -388935 2.03422e+06 -5.81496e+06 1.3652e+06 417.024 792.356 -2930.26 497.952 -204.25 167.024 0.000329876 -6.12235e-05 16.35 -0.000100672 0.000162153 5.79799e-05 5.14734e-07 1.02588e-07 16.35 1.41544e-07 -2.51821e-07 -1.03572e-07 0.00571421 -0.0218198 16.3435 0.00780873 -0.00123895 0.00467001 -2.88642e-05 1.19718e-05 16.35 1.4001e-05 -2.25079e-06 1.64488e-05 8.17912e-08 1.66395e-07 16.35 1.1051e-08 7.76577e-08 1.37153e-07
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.dforce(V_DERIV) = 312.211 868.663 -5444.17 27402.9 -81924.8 -11251.1 -455.576 -838.452 3333.88 -522.221 216.599 -183.847 -0.000388318 6.18666e-05 3.37151e-06 0.000111772 -0.000181219 -6.6249e-05 -7.03756e-07 -1.15497e-07 -1.27614e-07 -1.62081e-07 2.62896e-07 1.12957e-07 -0.00619271 0.0233837 0.00712285 -0.00863203 0.00135916 -0.00502805 2.74884e-05 -1.58121e-05 -2.96807e-07 -1.58262e-05 2.73374e-06 -1.85168e-05 -1.53792e-07 -2.11254e-07 -8.15432e-08 -8.74933e-09 -9.86087e-08 -1.5182e-07
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.free_velocity = 0 0 0 0 -4.05163e-06 0 0.0239139 0.0517297 -0.251426 0.0343097 -0.0124949 0.00897104 0.000377115 -2.75679e-05 -5.25615e-05 1.25947e-05 0.000118236 2.16862e-06 4.89873e-06 -2.63886e-07 1.07648e-07 1.27595e-07 1.29948e-06 1.65921e-07 -0.000173061 0.00254564 2.91637e-05 -0.000766992 -0.000113805 -6.22271e-05 0.000147199 0.000109335 -2.44203e-05 -2.69093e-05 4.2721e-05 1.89098e-06 2.93271e-06 9.19157e-07 5.11811e-08 -2.69936e-07 8.14143e-07 -4.12105e-08
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.showColor = 1 1 1 1
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/RigidNode/RigidMesh.solution = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+--- NEW SESSION: 04/11/2025 14:58:41 ---
+/Simulation/freeCenter/dofs.position = -15 -5 1.5 0 0 0 1 0 -5 1.5 0 0 0 1 15 -5 1.5 0 0 0 1 -15 5 1.5 0 0 0 1 0 5 1.5 0 0 0 1 15 5 1.5 0 0 0 1
+/Simulation/freeCenter/dofs.velocity = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.derivX = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.force = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.externalForce = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.dforce(V_DERIV) = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.showColor = 1 1 1 1
+/Simulation/freeCenter/dofs.lambda = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/freeCenter/dofs.constraint_dx = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+/Simulation/Articulation/ServoWheel/dofs.position = 0 0 1.5 0 0 0 1 0 0 1.5 0 0 0 1
+/Simulation/Articulation/ServoWheel/dofs.showColor = 1 1 1 1
+/Simulation/Articulation/dofs.showColor = 1 1 1 1
