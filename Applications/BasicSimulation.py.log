@@ -339,3 +339,7 @@
 /Simulation/Articulation/ServoWheel/dofs.position = 0 0 1.5 0 0 0 1 0 0 1.5 0 0 0 1
 /Simulation/Articulation/ServoWheel/dofs.showColor = 1 1 1 1
 /Simulation/Articulation/dofs.showColor = 1 1 1 1
+
+--- NEW SESSION: 24/12/2025 09:47:33 ---
+/ExternalRefNode/ExternalMO.showColor = 0 0 0.698039 1
+/ExternalRefNodeBase/ExternalBaseMO.showColor = 0 0 0.698039 1
