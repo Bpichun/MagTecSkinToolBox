@@ -12,7 +12,7 @@ import os
 import math
 import numpy as np
 import Sofa
-import h5py 
+# import h5py 
 import time
 import rigidification
 import matplotlib.pyplot as plt
@@ -20,6 +20,9 @@ from scipy.spatial.transform import Rotation as R
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 
 from Generation import MagneticSkin
+
+level_stretch = "000pct"  # options: "000pct", "010pct", "020pct"   
+level_taxels = "10"  # options "10", "40", "160"
 
 
 
@@ -62,21 +65,22 @@ def calculate_B_field(distance_r_m, magnetic_moment_direction, mu_magnitude):
     B_field = numerator / denominator
 
     # Convert Tesla to microTesla (1e6) or miliTesla (1e3)
-    B_field_uT = B_field * 1e6   
+    B_field_uT = B_field #* 1e6   
 
     return B_field_uT
+    
 
 
-def print_h5_structure(filename):
-    def print_attrs(name, obj):
-        if isinstance(obj, h5py.Dataset):
-            print(f"[DATASET] {name}  shape={obj.shape}  dtype={obj.dtype}")
-        elif isinstance(obj, h5py.Group):
-            print(f"[GROUP]   {name}")
+# def print_h5_structure(filename):
+#     def print_attrs(name, obj):
+#         if isinstance(obj, h5py.Dataset):
+#             print(f"[DATASET] {name}  shape={obj.shape}  dtype={obj.dtype}")
+#         elif isinstance(obj, h5py.Group):
+#             print(f"[GROUP]   {name}")
 
-    with h5py.File(filename, "r") as f:
-        print("=== structure of HDF5 file ===")
-        f.visititems(print_attrs)
+#     with h5py.File(filename, "r") as f:
+#         print("=== structure of HDF5 file ===")
+#         f.visititems(print_attrs)
 
 
 def get_taxels(
@@ -101,13 +105,13 @@ def get_taxels(
     )
 
     # Grilla
-    for i in range(1, Nx):
-        x = xmin + i * dx
-        plt.plot([x, x], [ymin, ymax], linestyle="--")
+    # for i in range(1, Nx):
+    #     x = xmin + i * dx
+    #     plt.plot([x, x], [ymin, ymax], linestyle="--")
 
-    for j in range(1, Ny):
-        y = ymin + j * dy
-        plt.plot([xmin, xmax], [y, y], linestyle="--")
+    # for j in range(1, Ny):
+    #     y = ymin + j * dy
+    #     plt.plot([xmin, xmax], [y, y], linestyle="--")
 
     # Centros
     center_taxels = []
@@ -120,6 +124,40 @@ def get_taxels(
             plt.text(cx, cy, f"{tid}", ha="center", va="center")
             center_taxels.append((cx, cy))
 
+def get_taxels(
+    xmin, xmax,
+    ymin, ymax,
+    sphere_radius = 3*1e-3,
+):
+    Nx, Ny = taxel_grid(int(level_taxels))  
+
+    xmin_safe = xmin + sphere_radius
+    xmax_safe = xmax - sphere_radius
+    ymin_safe = ymin + sphere_radius
+    ymax_safe = ymax - sphere_radius
+    Lx = xmax_safe - xmin_safe
+    Ly = ymax_safe - ymin_safe
+
+
+    dx = Lx / Nx
+    dy = Ly / Ny
+
+
+    #Taxels centers 
+    center_taxels = []
+    for iy in range(Ny):
+        for ix in range(Nx):
+
+            cx = xmin_safe + (ix + 0.5) * dx
+            cy = ymin_safe + (iy + 0.5) * dy
+
+            tid = iy * Nx + ix
+            center_taxels.append((cx, cy))
+
+    cx_skin = (xmin + xmax) / 2
+    cy_skin = (ymin + ymax) / 2
+
+    return center_taxels
 
 
 
@@ -404,8 +442,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
     def onAnimateBeginEvent(self, dt):
 
 
-        roi_indices = self.CFFSphereROI.indices.value
-        n_roi_indices = len(roi_indices)
+        # roi_indices = self.CFFSphereROI.indices.value
+        # n_roi_indices = len(roi_indices)
 
         #strecht 
         if self.t == 0:  
@@ -424,9 +462,9 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         tetras = self.rootNode.solverNode.RigidNode.RigidifiedNode.deformableNode.model.getObject('tetras')
         positions = tetras.position.value
          
-        cff_sphere = self.CFFSphereROI
-        cff_sphere.findData('position').value = tetras.position.value
-        cff_sphere.reinit()
+        # cff_sphere = self.CFFSphereROI
+        # cff_sphere.findData('position').value = tetras.position.value
+        # cff_sphere.reinit()
 
       #Para que los puntos lleguen a la posicion final 
         if self.t == 30:
@@ -496,7 +534,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
             if self.current_point >= len(self.trayectoria_5puntos):
                 print("Trayectoria terminada — guardando datos")
-                self.save_to_h5()
+                # self.save_to_h5()
                 return  
             
             # ---------- POSICIÓN ----------
@@ -750,7 +788,7 @@ def createScene(rootNode, config):
         rootNode.addObject("RequiredPlugin", name=name)
 
     rootNode.addObject('VisualStyle', displayFlags='hideWireframe showBehaviorModels hideCollisionModels hideBoundingCollisionModels showForceFields showInteractionForceFields')
-    rootNode.findData('gravity').value = [0, 0, -9810]
+    rootNode.findData('gravity').value = [0, 0, -9.810]
     rootNode.findData('dt').value = 0.02
 
     rootNode.addObject('FreeMotionAnimationLoop')
@@ -969,7 +1007,7 @@ def createScene(rootNode, config):
 
     RigidifiedNode =  RigidNode.addChild('RigidifiedNode')   
     RigidifiedNode.addObject('MechanicalObject', name='RigidifiedMesh', position=pointsTip,
-                             template='Vec3d', showObject=True, showObjectScale=4, showColor=1)       
+                             template='Vec3d', showObject=True, showObjectScale=4*1e-3 , showColor=1)       
     RigidifiedNode.addObject("RigidMapping", globalToLocalCoords="true", rigidIndexPerPoint=rigidIndexPerPoint)
     
     # pairsSub = [0, 1, 1, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5]
@@ -995,7 +1033,7 @@ def createScene(rootNode, config):
     # # ---- Deformable Node -----
     deformableNode = RigidifiedNode.addChild("deformableNode")
     deformableNode.addObject('PointSetTopologyContainer', position=pointsBody)
-    deformableNode.addObject('MechanicalObject', name='DeformableMech', showObject = False, showObjectScale = 4)
+    deformableNode.addObject('MechanicalObject', name='DeformableMech', showObject = False, showObjectScale = 4*1e-3 )
    
 
     model = deformableNode.addChild('model')
@@ -1009,8 +1047,8 @@ def createScene(rootNode, config):
 
 
     #Simulation solvers
-    # model.addObject('EulerImplicitSolver', name='nodesolver') 
-    # model.addObject('ShewchukPCGLinearSolver', iterations='15', name='linearsolver', tolerance='1e-5', update_step='1')
+    model.addObject('EulerImplicitSolver', name='nodesolver') 
+    model.addObject('ShewchukPCGLinearSolver', iterations='15', name='linearsolver', tolerance='1e-5', update_step='1')
     # model.addObject('GenericConstraintCorrection')
 
 
@@ -1026,7 +1064,6 @@ def createScene(rootNode, config):
                                                         lc= config.VolumeMeshCharacteristicLength))
                             
     model.addObject('TetrahedronSetTopologyContainer', name='container', src='@loader')
-    # model.addObject('TetrahedronSetGeometryAlgorithms')
     model.addObject('MechanicalObject', name='tetras', template='Vec3d', showIndices='false', showIndicesScale='4e-5')
     model.addObject('UniformMass', totalMass='0.1')
     model.addObject('TetrahedronFEMForceField', template='Vec3d', name='FEM', method='large', poissonRatio=config.PoissonRatio,  youngModulus=config.YoungsModulus)
@@ -1076,7 +1113,7 @@ def createScene(rootNode, config):
     CFFSphereROI = CFFNode.addObject('SphereROI', template="Vec3d", name='CFFSphereROI', centers=[0, 0, 0], radii=[config.indenterRadius], drawSphere=True)
     CFFSphereROI.init() 
 
-    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, -0], showArrowSize = 0.0001)                               
+    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, -0], showArrowSize = 0.0001*1e-3 )                               
     CFFNode.addObject("BarycentricMapping")
 
 
@@ -1088,7 +1125,7 @@ def createScene(rootNode, config):
 
     #Parte para fijar la base 
     ExternalRefNodeBase = rootNode.addChild("ExternalRefNodeBase")
-    ExternalRefNodeBase.addObject('MechanicalObject', name='ExternalBaseMO', template='Vec3', showObject=True, showObjectScale=4, showColor = [0,0,.7],
+    ExternalRefNodeBase.addObject('MechanicalObject', name='ExternalBaseMO', template='Vec3', showObject=True, showObjectScale=4*1e-3 , showColor = [0,0,.7],
                    showIndices=False, showIndicesScale=4e-5,
                    position='@../solverNode/RigidNode/RigidifiedNode/deformableNode/model/BaseFixROI.pointsInROI')
     

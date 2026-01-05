@@ -17,16 +17,16 @@ from BaseConfig import GmshDesignOptimization
 import numpy as np 
 import math
 
-def generate_grid(length, width, margin_x, margin_y, rows, cols):
+def generate_grid(length, width, margin, rows, cols):
+
     '''Generates a 2D grid of (x, y) points within a rectangle'''
-    x = np.linspace(-(length - margin_x) / 2, (length - margin_x) / 2, cols)
-    y = np.linspace(-(width - margin_y) / 2, (width - margin_y) / 2, rows)
+    x = np.linspace(-(length - margin) / 2, (length - margin) / 2, cols)
+    y = np.linspace(-(width - margin) / 2, (width - margin) / 2, rows)
     X, Y = np.meshgrid(x, y)
     return np.column_stack((X.ravel(), Y.ravel()))
 
 
-
-def getBoxroiCoords(centers, lengths, tolerance):
+def getBoxroiCoords( centers, lengths, tolerance):
     '''Generates the coordinates for creating a BoxROI'''
     lx, ly, lz = lengths
     boxes = []
@@ -45,6 +45,7 @@ def getBoxroiCoords(centers, lengths, tolerance):
 
 
 
+
 class Config(GmshDesignOptimization):
     def __init__(self):
         super(GmshDesignOptimization,self).__init__("MagneticSkin")
@@ -53,110 +54,72 @@ class Config(GmshDesignOptimization):
     def init_model_parameters(self):
 
         # ----Geometric parameters----
-        self.Length = 50
-        self.Width = 20 
-        self.Height = 5 
+        self.Length = 40
+        self.Width = 20
+        self.Height = 3
 
         # ----Elasticity parameters----
-        self.PoissonRatio = 0.4         # Poisson's ratio of the material
-        self.YoungsModulus = 275790     # Young's modulus DSkin30 - 40psi (material stiffness)
+        self.PoissonRatio = 0.4
+        self.YoungsModulus = 60000
 
-        # --- Magnet Parameters ---
+        # --- Magnet ---
         self.MagnetSide = 1
-        self.mu_magnitude = 4.627195188680999e-06
+        self.mu_magnitude = 4.627195188680999e-08
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
         self.VolumeMeshCharacteristicLength = 1.13
 
-        # ---- Generate grid for magnets and sensors positions  ----
+        self.GridMargin = 10
         self.GridRowsMagnets = 2
         self.GridColsMagnets = 3
         self.GridRowsSensors = 2
         self.GridColsSensors = 3
 
-        # margin 
-        self.margin_x = 6
-        self.margin_y = 10
-
         self.BoxTolerance = 0.1
         self.mask_magnets = np.ones((self.GridRowsMagnets, self.GridColsMagnets))
 
-        self.indenterRadius = 3
+        self.indenterRadius = 2
 
         self.ArticulationAngleRad = np.deg2rad(0)  
 
 
-        # self.BoxROIFixCoords = getBoxroiCoords(centers = [[self.Length/3.5, 0, 0]] , #3.5
-        #             lengths = [self.Length/2.3, self.Width, self.BoxTolerance], #2.3
-        #             tolerance = self.BoxTolerance)
+        self.BoxROIFixCoords = getBoxroiCoords(centers = [[self.Length/3.5, 0, 0]] , #3.5
+                    lengths = [self.Length/2.3, self.Width, self.BoxTolerance], #2.3
+                    tolerance = self.BoxTolerance)
         
 
         self.BoxROIFixCoords = getBoxroiCoords(centers=[[self.Length/3.5, 0, 0]],
                                                 lengths=[self.Length/2.3, self.Width, self.BoxTolerance],
                                                 tolerance=self.BoxTolerance)
-
-
         
-        # self.MagnetGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
-        #                                             self.GridRowsMagnets, self.GridColsMagnets)
-        # self.SensorGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
-        #                                             self.GridRowsSensors, self.GridColsSensors)
+        self.MagnetGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
+                                                    self.GridRowsMagnets, self.GridColsMagnets)
+        self.SensorGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
+                                                    self.GridRowsSensors, self.GridColsSensors)
 
-        self.MagnetGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsMagnets,  self.GridColsMagnets)
-        self.SensorGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsSensors,  self.GridColsSensors)
-
-
-        self.MagnetCenters = [[px, py, 4 ] for px, py in self.MagnetGridPoints]
-        self.SensorCenters = [[px, py, 1.25 ] for px, py in self.SensorGridPoints]  # - ArticulationAxis in z axis for Simulationthumbfinger  
-
-
-
-
-        # self.MagnetCenters = [
-        #     [px, py, self.Height/2]
-        #     for (px, py), keep in zip(self.MagnetGridPoints, self.mask_magnets.ravel()) if keep == 1
-        # ]
-        # self.SensorCenters = [[px, py, -self.Height/2] for px, py in self.SensorGridPoints]
+        self.MagnetCenters = [
+            [px, py, self.Height/2]
+            for (px, py), keep in zip(self.MagnetGridPoints, self.mask_magnets.ravel()) if keep == 1
+        ]
+        self.SensorCenters = [[px, py, -self.Height/2] for px, py in self.SensorGridPoints]
 
         # Centros de articulación rígida
         
         self.rigidArticulationCenter = np.array([[-self.Length/4, 0, 0]])
         self.rigidObjects = np.vstack([self.rigidArticulationCenter, self.MagnetCenters]).tolist()
 
-        
+
         # BoxROI para articulacion
         self.BoxROIFixCoordsArt = getBoxroiCoords(centers=[[-self.Length/4, 0, 0]],
                                                   lengths=[self.Length/2, self.Width, self.BoxTolerance],
                                                   tolerance=self.BoxTolerance
                                             )
-        # self.MagnetBoxCoords = getBoxroiCoords( centers=self.rigidObjects[1:],
-        #                                         lengths=(self.MagnetSide, self.MagnetSide, self.MagnetSide),
-        #                                         tolerance=self.BoxTolerance
-        #                                     )
-        # self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.MagnetBoxCoords]).tolist()
-
-
-
-
-        # ---- BoxROI coordinates for sensors and magnets----
-        self.SensorBoxCoords = getBoxroiCoords(centers = self.SensorCenters, 
-                                        lengths = (3, 3, 1.5), 
-                                        tolerance = self.BoxTolerance)
-
-        self.MagnetBoxCoords = getBoxroiCoords(centers = self.MagnetCenters, 
-                                        lengths = (self.MagnetSide, self.MagnetSide, self.MagnetSide),
-                                        tolerance = self.BoxTolerance)
-
-        # self.ObjectsBoxCoords = np.vstack([ self.BoxROIFixCoordsArt, self.MagnetBoxCoords, self.SensorBoxCoords])
-        
-        # rigidObjectsBoxCoordsThumb = np.vstack([BoxROIFixCoordsThumb, MagnetBoxCoords, SensorBoxCoords])
-        # rigidObjectsBoxCoordsThumb = rigidObjectsBoxCoordsThumb.tolist()
-
-        self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.MagnetBoxCoords, self.SensorBoxCoords]).tolist()
-   
-
- 
+        self.MagnetBoxCoords = getBoxroiCoords( centers=self.rigidObjects[1:],
+                                                lengths=(self.MagnetSide, self.MagnetSide, self.MagnetSide),
+                                                tolerance=self.BoxTolerance
+                                            )
+        self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.MagnetBoxCoords]).tolist()
 
         # IndexPairs para mappings
         self.IndexPairs = [0, 1]
@@ -171,13 +134,27 @@ class Config(GmshDesignOptimization):
             else:
                 index = 1
             self.indexPerPointSensor.append(index)
-    
         
         print('MagnetsBoxs')
         print(self.MagnetBoxCoords)
 
         print("MagnetGridPoints:")
         print(self.MagnetGridPoints)
+
+        # print("SensorGridPoints:")
+        # print(self.SensorGridPoints)
+
+        # print("MagnetCenters:")
+        # print(self.MagnetCenters)
+
+        # print("SensorCenters:")
+        # print(self.SensorCenters)
+
+        # print("Rigid Objects:")
+        # print(self.rigidObjects)
+
+        # print("IndexPairs:")
+        # print(self.IndexPairs)
 
 
         print(len(self.rigidObjectsBoxCoords))
@@ -204,6 +181,17 @@ class Config(GmshDesignOptimization):
         return [["MagneticSensitivity", "Deformation"]]
 
 
+
+    # def set_design_variables(self, new_values):
+    #     super(Config,self).set_design_variables(new_values)
+
+
+    #     # IndexPairs para mappings
+    #     self.IndexPairs = [0, 1]
+    #     for i in range(len(self.MagnetCenters)):
+    #         self.IndexPairs.extend([1, i])
+
+
+
 if __name__ == "__main__":
     cfg = Config()
-
