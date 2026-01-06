@@ -78,6 +78,7 @@ class Config(GmshDesignOptimization):
         # margin 
         self.margin_x = 6
         self.margin_y = 10
+        self.EdgeMargin = 0.1  
 
         self.BoxTolerance = 0.1
         self.mask_magnets = np.ones((self.GridRowsMagnets, self.GridColsMagnets))
@@ -87,56 +88,54 @@ class Config(GmshDesignOptimization):
         self.ArticulationAngleRad = np.deg2rad(0)  
 
 
-        # self.BoxROIFixCoords = getBoxroiCoords(centers = [[self.Length/3.5, 0, 0]] , #3.5
-        #             lengths = [self.Length/2.3, self.Width, self.BoxTolerance], #2.3
-        #             tolerance = self.BoxTolerance)
-        
-
-        self.BoxROIFixCoords = getBoxroiCoords(centers=[[self.Length/3.5, 0, 0]],
-                                                lengths=[self.Length/2.3, self.Width, self.BoxTolerance],
-                                                tolerance=self.BoxTolerance)
 
 
-        
-        # self.MagnetGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
-        #                                             self.GridRowsMagnets, self.GridColsMagnets)
-        # self.SensorGridPoints = generate_grid(self.Length, self.Width, self.GridMargin,
-        #                                             self.GridRowsSensors, self.GridColsSensors)
+        '''
+        ------------------------------------------------------------------------------------
+                                End of configurable parameters 
+        ------------------------------------------------------------------------------------
+        '''
 
+
+        # ---- Generate grid points on the XY plane for magnets and sensors----
         self.MagnetGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsMagnets,  self.GridColsMagnets)
         self.SensorGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsSensors,  self.GridColsSensors)
 
-
+        # ---- Magnets and Sensors centers 3D coordinates ---- 
         self.MagnetCenters = [[px, py, 4 ] for px, py in self.MagnetGridPoints]
         self.SensorCenters = [[px, py, 1.25 ] for px, py in self.SensorGridPoints]  # - ArticulationAxis in z axis for Simulationthumbfinger  
 
+        # ---- Number of magnets and sensors ----
+        self.NMagnets = len(self.MagnetCenters)    
+        self.NSensors = len(self.SensorCenters)
+
+
+        # ---- Rigid Articulation center 3D coordinates ----
+        self.rigidArticulationCenter = np.array([[-self.Length/2, 0, 0]])
+
+        # ---- Rigid center 3D coordinates ----
+        self.rigidObjects = np.vstack([self.rigidArticulationCenter, self.MagnetCenters, self.SensorCenters]).tolist()
 
 
 
-        # self.MagnetCenters = [
-        #     [px, py, self.Height/2]
-        #     for (px, py), keep in zip(self.MagnetGridPoints, self.mask_magnets.ravel()) if keep == 1
-        # ]
-        # self.SensorCenters = [[px, py, -self.Height/2] for px, py in self.SensorGridPoints]
+        # Defines a fixed region of interest (ROI) box with margins around the magnetic skin (rigid)
+        self.BoxROIFixCoords = getBoxroiCoords(centers = [[-0, 0, 0]] , #3.5
+                                        lengths = [self.Length/1.01, self.Width, self.BoxTolerance], #2.3
+                                        tolerance = self.BoxTolerance)
 
-        # Centros de articulación rígida
+
         
-        self.rigidArticulationCenter = np.array([[-self.Length/4, 0, 0]])
-        self.rigidObjects = np.vstack([self.rigidArticulationCenter, self.MagnetCenters]).tolist()
-
-        
-        # BoxROI para articulacion
-        self.BoxROIFixCoordsArt = getBoxroiCoords(centers=[[-self.Length/4, 0, 0]],
-                                                  lengths=[self.Length/2, self.Width, self.BoxTolerance],
-                                                  tolerance=self.BoxTolerance
-                                            )
-        # self.MagnetBoxCoords = getBoxroiCoords( centers=self.rigidObjects[1:],
-        #                                         lengths=(self.MagnetSide, self.MagnetSide, self.MagnetSide),
-        #                                         tolerance=self.BoxTolerance
-        #                                     )
-        # self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.MagnetBoxCoords]).tolist()
+        # Defines a rigidified region box on the opposite side (articulation)
+        self.BoxROIFixCoordsArt = getBoxroiCoords(centers = [[-self.Length/4  , 0, 0]] , 
+                                            lengths = [self.Length/2, self.Width, self.BoxTolerance],
+                                            tolerance = self.BoxTolerance)
 
 
+
+        # Rigidified region for the thumb finger
+        self.BoxROIFixCoordsThumb = getBoxroiCoords(centers = [[-self.Length/6.5, 0, 0]] , 
+                                            lengths = [self.Length/1.4, self.Width, self.BoxTolerance],
+                                            tolerance = self.BoxTolerance)
 
 
         # ---- BoxROI coordinates for sensors and magnets----
@@ -148,6 +147,29 @@ class Config(GmshDesignOptimization):
                                         lengths = (self.MagnetSide, self.MagnetSide, self.MagnetSide),
                                         tolerance = self.BoxTolerance)
 
+
+        # --- right BoxROI para el borde derecho ---
+        self.BoxROIFixCoords_base = [
+            self.Length / 2 + self.BoxTolerance, 
+            self.Width / 2 + self.BoxTolerance, 
+            self.Height  + self.BoxTolerance,  
+            self.Length / 2 - self.EdgeMargin,       
+            -(self.Width / 2 + self.BoxTolerance),
+            - self.BoxTolerance 
+            ]
+
+        # --- left BoxROI ---
+        self.BoxROIFixCoords1 = [
+            -(self.Length / 2 - self.EdgeMargin),           
+            self.Width  / 2 + self.BoxTolerance,   
+            self.Height + self.BoxTolerance,       
+            -(self.Length / 2 + self.BoxTolerance),
+            -(self.Width / 2 + self.BoxTolerance), 
+            -self.BoxTolerance     
+            ]
+
+
+
         # self.ObjectsBoxCoords = np.vstack([ self.BoxROIFixCoordsArt, self.MagnetBoxCoords, self.SensorBoxCoords])
         
         # rigidObjectsBoxCoordsThumb = np.vstack([BoxROIFixCoordsThumb, MagnetBoxCoords, SensorBoxCoords])
@@ -156,7 +178,8 @@ class Config(GmshDesignOptimization):
         self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.MagnetBoxCoords, self.SensorBoxCoords]).tolist()
    
 
- 
+        self.ObjectsBoxCoords = np.vstack([ self.MagnetBoxCoords, self.SensorBoxCoords])
+        print(self.ObjectsBoxCoords)
 
         # IndexPairs para mappings
         self.IndexPairs = [0, 1]
