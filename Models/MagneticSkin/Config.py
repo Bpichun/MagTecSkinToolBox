@@ -63,7 +63,7 @@ class Config(GmshDesignOptimization):
 
         # --- Magnet Parameters ---
         self.MagnetSide = 1
-        self.mu_magnitude = 4.627195188680999e-06
+        self.mu_magnitude = 4.627195188680999e-08
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
