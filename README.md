@@ -97,7 +97,7 @@ In this section we introduce the main commands for using the toolbox with the Se
 ### Testing a baseline SOFA scene <a name="baselinesim"></a>
 For running a parametric scene without optimization, the following command is available:
 ```bash
-python3 main.py -n SensorFinger -op 0 -sd -so ba 
+python3 main.py -n MagneticSkin -op 0 -sd -so ba 
 ```
 - -n, --name: name of the soft robot.
 - -op, --optimization_problem: reference to the configuration describing a given optimization problem for a soft robot parametric design. This is an optional parameter for running a baseline simulation. For a same soft robot, several optimization configurations can be implemented considering different design variables or optimization objectives. After the simulation is run, the cost function related to the optimization problem will be evaluated and printed on the console. In the case of the SoftFinger, the available optimization configurations are found in the subfolder "Models/SensorFinger/OptimizationConfigs/". If you select a non-existing configuration, the script will run with a default value. 
@@ -107,7 +107,7 @@ python3 main.py -n SensorFinger -op 0 -sd -so ba
 ### Sensitivity Analysis <a name="sensitivityanalysis"></a>
 Running a sensitivity analysis for measuring the local impact of each design variable on the optimization objectives is performed through:
 ```bash
-python3 main.py -n SensorFinger -op 0 -sa -nsa 2
+python3 main.py -n MagneticSkin -op 0 -sa -nsa 2
 ```
 - -n, --name: see above
 - -op, --optimization_problem: see above.
@@ -117,7 +117,7 @@ python3 main.py -n SensorFinger -op 0 -sa -nsa 2
 ### Design Optimization <a name="designoptimization"></a>
 Design optimization of a parametric design is launched using:
 ```bash
-python3 main.py -n SensorFinger -op 0 -o -ni 100
+python3 main.py -n MagneticSkin -op 0 -o -ni 100
 ```
 - -n, --name: see above
 - -op, --optimization_problem: see above
@@ -131,7 +131,7 @@ The number of design optimization iterations "ni" provided is then the number of
 ### Simulate a Design obtained through Optimization <a name="resultsim"></a>
 For selecting and visualizing any design encountered during design optimization in the SOFA GUI, consider the following command: 
 ```bash
-python3 main.py -n SensorFinger -op 0 -sd -so fo
+python3 main.py -n MagneticSkin -op 0 -sd -so fo
 ```
 - -so, --simulation_option: simulation option. For choosing a specific design encountered during design optimization, we have to specify the option "fo" [Optional, default=ba]
 

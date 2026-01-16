@@ -347,3 +347,29 @@
 --- NEW SESSION: 05/01/2026 23:57:17 ---
 /ExternalRefNode/ExternalMO.showObjectScale = 10
 /ExternalRefNode/ExternalMO.showColor = 0 0 0.698039 1
+
+--- NEW SESSION: 12/01/2026 17:36:23 ---
+/ExternalRefNode/ExternalMO.showObjectScale = 10
+/ExternalRefNode/ExternalMO.showColor = 0 0 0.698039 1
+
+--- NEW SESSION: 12/01/2026 17:46:22 ---
+/ExternalRefNode/ExternalMO.showObjectScale = 10
+/ExternalRefNode/ExternalMO.showColor = 0 0 0.698039 1
+
+--- NEW SESSION: 13/01/2026 09:57:14 ---
+/ExternalRefNodeBase/ExternalBaseMO.showObjectScale = 4
+/ExternalRefNodeBase/ExternalBaseMO.showColor = 0 0 0.698039 1
+
+--- NEW SESSION: 13/01/2026 10:13:34 ---
+/ExternalRefNodeBase/ExternalBaseMO.showColor = 0 0 0.698039 1
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/BaseFixSpring.springColor = 0 1 0 1
+
+--- NEW SESSION: 13/01/2026 16:31:11 ---
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/BaseROI.drawROI = 0
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/RestShapeSpringsForceField.springColor = 0 1 0 1
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/EndROI.drawROI = 0
+
+--- NEW SESSION: 15/01/2026 16:55:05 ---
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.totalForce = 0 0 -29.5
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.showArrowSize = 0
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.showColor = 0.2 0.898039 0.298039 1

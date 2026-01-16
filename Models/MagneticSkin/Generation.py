@@ -131,10 +131,10 @@ def MagneticSkin(length, width, height, magnet_boxes, lc =0.1):
     mags = create_magnet_boxes(magnet_boxes) if magnet_boxes else []
     result = cut_magnets_from_base(base, mags)
 
-    # --- Asigna un mallado global más grueso ---
+
     define_mesh_sizes(length, width, height, lc)
 
-    # --- Si hay imanes, define campos locales más finos ---
+
     # if center:
 
         # for center in center:
