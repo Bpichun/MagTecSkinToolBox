@@ -18,7 +18,7 @@ import rigidification
 import Sofa.Core
 import Sofa.constants.Key as Key
 from scipy.spatial.transform import Rotation as R 
-import h5py 
+# import h5py 
 import matplotlib.pyplot as plt
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 
