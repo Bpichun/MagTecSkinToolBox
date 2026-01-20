@@ -87,11 +87,8 @@ def taxel_grid(n):
     return n // p, p
 
 
-def get_taxels(
-    xmin, xmax,
-    ymin, ymax,
-    filename=f"grid_{level_taxels}_taxels.png"
-):
+def get_taxels(xmin, xmax,ymin, ymax,):
+
     Nx, Ny = taxel_grid(int(level_taxels))  
 
     Lx = xmax - xmin
@@ -106,12 +103,7 @@ def get_taxels(
         for ix in range(Nx):
             cx = xmin + (ix + 0.5) * dx
             cy = ymin + (iy + 0.5) * dy
-            # cx = xmin_safe + (ix + 0.5) * dx
-            # cy = ymin_safe + (iy + 0.5) * dy
             center_taxels.append((cx, cy))
-
-    cx_skin = (xmin + xmax) / 2
-    cy_skin = (ymin + ymax) / 2
 
     return center_taxels
 
@@ -159,11 +151,9 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         # ----- SOFA nodes and objects -----
         # self.RootNode = kwargs['RootNode']
         self.RigidMO = kwargs['RigidMO']
-        # self.SensorMO = kwargs['SensorMO']
         self.CFF = kwargs['CFF']
         self.CFFSphereROI = kwargs['CFFSphereROI'] 
         self.CFFMO = kwargs['CFFMO']   
-
 
         # Objective evaluation variables
         self.current_iter = 0
@@ -241,27 +231,30 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
             if self.current_point >= len(self.trayectoria_5puntos):
                 print("Trajectory ended")
+                # self.trajectory_done = True
+                # print('current_point', self.t )
     
-                return   
+            else:
             
-            # ---------- identer position ----------
-            identer_position = self.trayectoria_5puntos[self.current_point]
-            self.MoveCFFSphereROI(identer_position)
+                # ---------- identer position ----------
+                identer_position = self.trayectoria_5puntos[self.current_point]
+                self.MoveCFFSphereROI(identer_position)
 
-            # ---------- set force ----------
-            self.CFF.totalForce.value = [0.0, 0.0, set_force]
+                # ---------- set force ----------
+                self.CFF.totalForce.value = [0.0, 0.0, set_force]
 
-            # ---------- time ----------
-            self.force_wait_counter += 1
+                # ---------- time ----------
+                self.force_wait_counter += 1
 
-            if self.force_wait_counter >= self.frames_to_wait:
-                self.force_wait_counter = 0
-                self.waiting = True  # Activamos la espera para guardar datos
-                self.frames_counter = 0
+                if self.force_wait_counter >= self.frames_to_wait:
+                    self.force_wait_counter = 0
+                    self.waiting = True  # Activamos la espera para guardar datos
+                    self.frames_counter = 0
+
 
         # ---- Extract pose of magnets and sensors ----
-        MagnetPose = self.RigidMO.position.value[0:self.config.NMagnets, :]
-        SensorPose = self.RigidMO.position.value[self.config.NMagnets:, :]
+        SensorPose = self.RigidMO.position.value[0:self.config.NSensors, :]
+        MagnetPose = self.RigidMO.position.value[self.config.NSensors:, :]
 
 
         # ---- Extract 3D positions of magnets and sensors ----
@@ -302,42 +295,50 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
 
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw]
-        
+        # print('GlobalMagneticField_index_real', GlobalMagneticField_index_real)
+
         if self.waiting:
-                self.frames_counter += 1
+            self.frames_counter += 1
 
-                if self.frames_counter >= self.frames_to_wait:        
-                     
-                    if len(self.data_MagneticField) <= self.current_point:
-                        self.data_MagneticField.append([])
+            if self.frames_counter >= self.frames_to_wait:  
+              
+                if len(self.data_MagneticField) <= self.current_point:
+                    self.data_MagneticField.append([])
 
-                    self.data_MagneticField[self.current_point].append(GlobalMagneticField_index_real)
-                    # print(f"[Guardado] MagneticField_real={GlobalMagneticField_index_real}")    
+                self.data_MagneticField[self.current_point].append(GlobalMagneticField_index_real)
+                # print(f"[Guardado] MagneticField_real={GlobalMagneticField_index_real}")    
 
-                    self.current_point += 1
-                    self.waiting = False
+                self.current_point += 1
+                self.waiting = False
 
 
-        if self.current_iter == self.max_iter:
+        if self.current_iter == self.max_iter-1:
             current_objectives_names = self.config.get_currently_assessed_objectives()
             print(f"[Objective] Current objectives: {current_objectives_names}")
 
             for i in range(len(current_objectives_names)):
 
                 current_objective_name =  current_objectives_names[i]
-
                  # Sensibility metrics. 
-                if "SensorsNumber" == current_objective_name:
-                    sensors = len(SensorPose)/15.0
-                    print("Number of sensors =", sensors)
-                    self.objectives.append(sensors)
-
-                elif "MagneticSensitivity" == current_objective_name:
+                if "MagneticSensitivity" == current_objective_name:
                     MagneticSensitivity = np.linalg.norm(self.data_MagneticField, axis=2)
                     MagneticSensitivity_per_taxel = np.sum(MagneticSensitivity, axis=1)
                     metric = np.mean(MagneticSensitivity_per_taxel)
                     print("MagneticSensitivity =", metric)
                     self.objectives.append(metric)
+
+                if "SensorsNumber" == current_objective_name:
+                    sensors = len(SensorPose)
+                    print("Number of sensors =", sensors)
+                    self.objectives.append(sensors)
+
+                if "MagnetNumber" == current_objective_name:
+                    magnets = len(MagnetPose)
+                    print("Number of magnets =", magnets)
+                    self.objectives.append(magnets)
+
+
+        # print("[DEBUG] objectives computed =", self.objectives)
 
         self.t += 1
         self.current_iter += 1
@@ -397,7 +398,6 @@ def createScene(rootNode, config):
 
     rootNode.addObject('FreeMotionAnimationLoop')
     rootNode.addObject('GenericConstraintSolver', tolerance="1e-12", maxIterations="10000")
-    # rootNode.addObject('VisualStyle', displayFlags='hideAll')
 
     # rootNode.addObject('GenericConstraintSolver', maxIterations=1e3, tolerance=1e-5)
 
@@ -410,7 +410,6 @@ def createScene(rootNode, config):
     # rootNode.addObject('RequiredPlugin', name='Sofa.GL.Component.Shader')
     # rootNode.addObject('RequiredPlugin', name='Sofa.Component.Mapping.NonLinear')
     # rootNode.addObject('RequiredPlugin', name='Sofa.Component.Constraint.Projective')
-
 
 
     rootNode.addObject('DefaultVisualManagerLoop')
@@ -428,7 +427,7 @@ def createScene(rootNode, config):
     #----------------------
     # Rigidification - start
     #----------------------          
-                   
+
     completeMesh = rootNode.addChild('completeMesh')
     # completeMesh.addObject('MeshVTKLoader', name='loader', filename=VolumetricMeshPath)
     completeMesh.addObject('MeshVTKLoader', name='loader', 
@@ -445,12 +444,11 @@ def createScene(rootNode, config):
     completeMesh.init()
     MeshTetra = completeMesh.addObject('MeshTopology', name="AllMesh", src='@loader')
 
-    
 
     #---- Create BoxROIs ----
     Boxes = []
     for i in range(len(config.rigidObjectsBoxCoords[1:])):
-        boxTip = completeMesh.addObject('BoxROI', name='Tip'+str(i), box=[config.rigidObjectsBoxCoords[i+1]], drawBoxes=False, 
+        boxTip = completeMesh.addObject('BoxROI', name='Tip'+str(i), box=[config.rigidObjectsBoxCoords[i+1]], drawBoxes=True, 
                                         tetrahedra="@container.tetrahedra" , position="@container.position")
         Boxes.append(boxTip)
         boxTip.init()
@@ -567,7 +565,6 @@ def createScene(rootNode, config):
     #Parte de la Base Fija (se mueven los nodos y se fijan en t=30)
     model.addObject('BoxROI', name='BaseFixROI', box=config.BoxROIFixCoords, drawBoxes=True, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")            
     # model.addObject('RestShapeSpringsForceField', name='BaseFixSpring' , points='@BaseFixROI.indices', stiffness='0', external_rest_shape="@/ExternalRefNodeBase/ExternalBaseMO")
-
 
 
     #    #Parte que se mueve

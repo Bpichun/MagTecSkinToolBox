@@ -373,3 +373,8 @@
 /solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.totalForce = 0 0 -29.5
 /solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.showArrowSize = 0
 /solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/CFF.showColor = 0.2 0.898039 0.298039 1
+
+--- NEW SESSION: 20/01/2026 14:55:12 ---
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObject = 1
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showObjectScale = 4
+/solverNode/RigidNode/RigidifiedNode/deformableNode/model/CFFNode/MechanicalObject.showColor = 1 1 1 1

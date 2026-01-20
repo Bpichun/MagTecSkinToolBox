@@ -119,6 +119,7 @@ def cut_magnets_from_base(base_dimtag, magnet_dimtags):
     return result[0] if isinstance(result, (list, tuple)) else result
 
 
+
 ############################
 ### Public API functions ###
 ############################
