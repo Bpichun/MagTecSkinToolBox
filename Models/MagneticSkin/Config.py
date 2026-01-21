@@ -76,7 +76,6 @@ def getBoxroiCoords(centers, lengths, tolerance):
     return boxes
 
 
-
 class Config(GmshDesignOptimization):
     def __init__(self):
         super(GmshDesignOptimization,self).__init__("MagneticSkin")
@@ -112,8 +111,8 @@ class Config(GmshDesignOptimization):
 
         
         # --- Magnet density ---
-        self.MagnetDensity_x = 0.1
-        self.MagnetDensity_y = 0.1
+        self.MagnetDensity_x = 0.05
+        self.MagnetDensity_y = 0.05      
         self.MagnetGridOrientation = 45  # degrees
         self.delta_x = 0
         self.delta_y = 0
@@ -122,7 +121,7 @@ class Config(GmshDesignOptimization):
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
         self.grid_xy = generate_infinite_grid(self.spacing_x, self.spacing_y, n=30, angle_deg=self.MagnetGridOrientation, origin=(self.delta_x, self.delta_y))
 
-    
+
         
         # ------------------------------------------------------------------------------------
         #                         End of configurable parameters 
@@ -130,7 +129,7 @@ class Config(GmshDesignOptimization):
   
 
         # ---- Generate grid points on the XY plane for magnets and sensors----
-        self.MagnetGridPoints = cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=3, margin_y=3)
+        self.MagnetGridPoints = cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=2.5, margin_y=2.5)
         self.SensorGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsSensors,  self.GridColsSensors)
 
         # ---- Magnets and Sensors centers 3D coordinates ---- 
@@ -194,9 +193,9 @@ class Config(GmshDesignOptimization):
 
     def get_design_variables(self):
         return {
-            # "numberSensor": [self.numberSensors, 0.0, 14],
-            "MagnetDensity_x": [self.MagnetDensity_x, 0.01, 0.15],   # me falta agregar el de numero de sensores (con una mascara)
-            "MagnetDensity_y": [self.MagnetDensity_y, 0.01, 0.15], 
+            # "numberSensor": [self.NSensors, 0.0, 14],
+            "MagnetDensity_x": [self.MagnetDensity_x, 0.005, 0.05],   # me falta agregar el de numero de sensores (con una mascara)
+            "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.05], 
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
             "delta_x": [self.delta_x, -0.5, 0.5],
             "delta_y": [self.delta_y, -0.5, 0.5]
@@ -208,7 +207,6 @@ class Config(GmshDesignOptimization):
         "MagneticSensitivity": ["maximize", 142],
         "MagnetNumber": ["minimize", 142]
         }
-
 
     def get_assessed_together_objectives(self):
         # return [["MagneticSensitivity", "SensorsNumber"]]

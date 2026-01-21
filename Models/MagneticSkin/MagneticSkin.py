@@ -13,12 +13,10 @@ import Sofa
 import SofaRuntime
 from stlib3.scene import Scene
 from splib3.animation import animate
-# import Geometries.Constants1 as Const
 import rigidification  
 import Sofa.Core
 import Sofa.constants.Key as Key
 from scipy.spatial.transform import Rotation as R 
-# import h5py 
 import matplotlib.pyplot as plt
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 
@@ -26,15 +24,14 @@ from Generation import MagneticSkin
 
 
 
-
-EdgeMargin = 0.1 *1e-3 
-
 level_stretch = "020pct"  # options: "000pct", "010pct", "020pct"   
 level_taxels = "10"  # options "10", "40", "160"
 
 stretch_pct = int(level_stretch.replace("pct", ""))/100
 
-
+M_hw =np.array([[12,9,6,3,0],[13,10,7,4,1],[14,11,8,5,2]])
+A_hw = M_hw.flatten()
+sim_to_hw = np.argsort(A_hw) 
 
 def calculate_B_field(distance_r_m, magnetic_moment_direction, mu_magnitude):
     """
@@ -139,15 +136,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         super(FitnessEvaluationController,self).__init__(*args, **kwargs)
 
         self.ModelNode = self.rootNode.solverNode.RigidNode.RigidifiedNode.deformableNode.model     
-        # self.RigidMO = kwargs['RigidMO']   
-        # self.CableConstraint = self.ModelNode.cables.cable1.CableConstraint
-        # self.ReferenceMO = self.rootNode.ReferenceMONode.ReferenceMO
-        # self.StartPosition = np.array(self.ReferenceMO.position.value[0])
-        # self.StartAngle = math.acos( np.abs(self.StartPosition[2]) / np.linalg.norm(self.StartPosition)) 
-        # self.FollowingMO = self.rootNode.model.FollowingMONode.FollowingMO
-        
-        
-        
+  
         # ----- SOFA nodes and objects -----
         # self.RootNode = kwargs['RootNode']
         self.RigidMO = kwargs['RigidMO']
@@ -161,11 +150,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.max_iter = max([self.config.get_objective_data()[current_objectives[i]][1] for i in range(len(current_objectives))])
 
 
-        # ----- Time and PID variables -----
+        # ----- Time variables -----
         self.t = 0
-
-        #Data
-        self.data_MagneticField = []
 
         self.wait_counter = 0 
         self.frames_to_wait = 10
@@ -173,6 +159,10 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.current_point =  0
         self.current_force_idx = 0
         self.force_wait_counter = 0
+
+        # ----- Data -----
+        self.data_MagneticField = []
+
 
 
         centers_taxels = get_taxels(xmin=-self.config.Length/2,
@@ -225,15 +215,13 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
             indices = spring.findData('points').value
 
         identer_position = [0, 0, 0]
-        set_force = -50000.5  # ver unidades de medida 
+        set_force = -50000  # ver unidades de medida 
 
         if self.t > 30:
 
             if self.current_point >= len(self.trayectoria_5puntos):
                 print("Trajectory ended")
-                # self.trajectory_done = True
-                # print('current_point', self.t )
-    
+
             else:
             
                 # ---------- identer position ----------
@@ -289,11 +277,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         
         GlobalMagneticField = np.array(GlobalMagneticField) #(15, 3)
 
-        M_hw =np.array([[12,9,6,3,0],[13,10,7,4,1],[14,11,8,5,2]])
-        A_hw = M_hw.flatten()
-        sim_to_hw = np.argsort(A_hw) 
-
-
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw]
         # print('GlobalMagneticField_index_real', GlobalMagneticField_index_real)
 
@@ -319,7 +302,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
             for i in range(len(current_objectives_names)):
 
                 current_objective_name =  current_objectives_names[i]
-                 # Sensibility metrics. 
+                 # Sensibility metric. 
                 if "MagneticSensitivity" == current_objective_name:
                     MagneticSensitivity = np.linalg.norm(self.data_MagneticField, axis=2)
                     MagneticSensitivity_per_taxel = np.sum(MagneticSensitivity, axis=1)
@@ -336,9 +319,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                     magnets = len(MagnetPose)
                     print("Number of magnets =", magnets)
                     self.objectives.append(magnets)
-
-
-        # print("[DEBUG] objectives computed =", self.objectives)
 
         self.t += 1
         self.current_iter += 1
@@ -616,13 +596,12 @@ def createScene(rootNode, config):
                                                     # lc_surface = config.SurfaceMeshCharacteristicLength,
                                                     lc= config.SurfaceMeshCharacteristicLength))
 
-
-
     CFFMO = CFFNode.addObject('MechanicalObject', position='@loader.position') 
     CFFSphereROI = CFFNode.addObject('SphereROI', template="Vec3d", name='CFFSphereROI', centers=[0, 0 ,5*1e-3], radii=[config.indenterRadius], drawSphere=True, drawPoints = True, drawSize=6 )
     CFFSphereROI.init()              
     CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, 20], showArrowSize=3*1e-3)                               
     CFFNode.addObject("BarycentricMapping")
+
 
     # return rootNode
     rootNode.addObject(FitnessEvaluationController(name="FitnessEvaluationController", rootNode=rootNode, 
