@@ -19,12 +19,12 @@ import Sofa.constants.Key as Key
 from scipy.spatial.transform import Rotation as R 
 import matplotlib.pyplot as plt
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
-
+import itertools
 from Generation import MagneticSkin
 
 
 
-level_stretch = "020pct"  # options: "000pct", "010pct", "020pct"   
+level_stretch = "000pct"  # options: "000pct", "010pct", "020pct"   
 level_taxels = "10"  # options "10", "40", "160"
 
 stretch_pct = int(level_stretch.replace("pct", ""))/100
@@ -32,6 +32,7 @@ stretch_pct = int(level_stretch.replace("pct", ""))/100
 M_hw =np.array([[12,9,6,3,0],[13,10,7,4,1],[14,11,8,5,2]])
 A_hw = M_hw.flatten()
 sim_to_hw = np.argsort(A_hw) 
+
 
 def calculate_B_field(distance_r_m, magnetic_moment_direction, mu_magnitude):
     """
@@ -126,6 +127,61 @@ def S_trajectory(points, heigth):
 
     return np.array(trayectoria)
 
+def compute_metrics(MagneticField, combinations_k):
+        """
+        Compute mean metric, std metric and per-taxel sums
+        for fixed-k sensor combinations.
+
+        Parameters
+        ----------
+        MagneticField : np.ndarray
+            Shape (N_offsets, N_sensors, 3)
+        combinations_k : list of tuples
+            Sensor index combinations of fixed size k
+
+        Returns
+        -------
+        metric : np.ndarray
+            Mean magnitude per combination
+        stds : np.ndarray
+            Std magnitude per combination
+        order : np.ndarray
+            Indices that sort metric (ascending)
+        combs : list of tuples
+            Sensor combinations
+        total_sum_per_taxel : list of np.ndarray
+            Each element shape (N_offsets,)
+        """
+
+        n_comb = len(combinations_k)
+
+        metric = np.zeros(n_comb)
+        stds = np.zeros(n_comb)
+        total_sum_per_taxel = []
+        combs = list(combinations_k)
+
+        for i, comb in enumerate(combinations_k):
+            sensor_idx = list(comb)
+
+            B_magnitude = np.sqrt(
+                MagneticField[:, sensor_idx, 0]**2 +
+                MagneticField[:, sensor_idx, 1]**2 +
+                MagneticField[:, sensor_idx, 2]**2
+            )
+
+            # Sum per taxel (offset)
+            B_sum_per_taxel = np.sum(B_magnitude, axis=1)
+
+            metric[i] = np.mean(B_sum_per_taxel)
+            stds[i]   = np.std(B_sum_per_taxel)
+
+            total_sum_per_taxel.append(B_sum_per_taxel)
+
+        order = np.argsort(metric)
+
+        return metric, stds, order, combs, total_sum_per_taxel
+    
+
 
 class FitnessEvaluationController(BaseFitnessEvaluationController):   
     
@@ -154,11 +210,12 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.t = 0
 
         self.wait_counter = 0 
-        self.frames_to_wait = 10
+        self.frames_to_wait = 20
         self.waiting = False
         self.current_point =  0
         self.current_force_idx = 0
         self.force_wait_counter = 0
+        self.offset = None
 
         # ----- Data -----
         self.data_MagneticField = []
@@ -187,13 +244,13 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
         #strecht 
         if self.t == 0:  
-            displacement = -3  # in meters
+            displacement = -0  # in meters
             grab_node = self.rootNode.ExternalRefNode
             grab = grab_node.getObject('ExternalMO')
             currentValue = list(grab.translation.value)
             currentValue[0] = displacement
             grab.translation.value = currentValue
-
+            grab.reinit()
 
 
         if self.t == 30:
@@ -215,7 +272,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
             indices = spring.findData('points').value
 
         identer_position = [0, 0, 0]
-        set_force = -50000  # ver unidades de medida 
+        set_force = -200000  # ver unidades de medida 
 
         if self.t > 30:
 
@@ -277,8 +334,25 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         
         GlobalMagneticField = np.array(GlobalMagneticField) #(15, 3)
 
-        GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw]
-        # print('GlobalMagneticField_index_real', GlobalMagneticField_index_real)
+
+
+        GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] 
+        # if self.t == 0:
+        #     offset = GlobalMagneticField_index_real
+
+        # GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] - offset
+
+
+
+
+        if self.offset is None:
+            self.offset = GlobalMagneticField_index_real.copy()
+
+        print('Offset', self.offset)
+
+        GlobalMagneticField_index_real = GlobalMagneticField_index_real - self.offset
+
+        print('GlobalMagneticField_index_real', GlobalMagneticField_index_real)
 
         if self.waiting:
             self.frames_counter += 1
@@ -289,6 +363,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                     self.data_MagneticField.append([])
 
                 self.data_MagneticField[self.current_point].append(GlobalMagneticField_index_real)
+                # print('Shape data_MagneticField:', np.array(self.data_MagneticField).shape)
                 # print(f"[Guardado] MagneticField_real={GlobalMagneticField_index_real}")    
 
                 self.current_point += 1
@@ -296,22 +371,22 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
 
         if self.current_iter == self.max_iter-1:
+            
+            # calcular mejores combinaciones 
+
+
+
+
+
             current_objectives_names = self.config.get_currently_assessed_objectives()
             print(f"[Objective] Current objectives: {current_objectives_names}")
 
             for i in range(len(current_objectives_names)):
 
                 current_objective_name =  current_objectives_names[i]
-                 # Sensibility metric. 
-                if "MagneticSensitivity" == current_objective_name:
-                    MagneticSensitivity = np.linalg.norm(self.data_MagneticField, axis=2)
-                    MagneticSensitivity_per_taxel = np.sum(MagneticSensitivity, axis=1)
-                    metric = np.mean(MagneticSensitivity_per_taxel)
-                    print("MagneticSensitivity =", metric)
-                    self.objectives.append(metric)
 
-                if "SensorsNumber" == current_objective_name:
-                    sensors = len(SensorPose)
+                if "SensorNumber" == current_objective_name:
+                    sensors = self.config.NumberSensors 
                     print("Number of sensors =", sensors)
                     self.objectives.append(sensors)
 
@@ -319,6 +394,35 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                     magnets = len(MagnetPose)
                     print("Number of magnets =", magnets)
                     self.objectives.append(magnets)
+
+                # Sensibility metric. 
+                if "MagneticSensitivity" == current_objective_name:
+
+                    # print('nnnn', self.data_MagneticField)
+                    # print('Shape data_MagneticField:', np.array(self.data_MagneticField).shape)
+
+                    MagneticField = np.concatenate(self.data_MagneticField, axis=0)
+                    # print('MagneticField.shape', MagneticField.shape)
+
+                    # ============================================================
+                    # Combinations
+                    # ============================================================
+                    index_sensors = np.arange(15)
+                    k = int(self.config.NumberSensors)  
+                    combinations_k = list(itertools.combinations(index_sensors, k))
+
+                    # ============================================================
+                    # Metric
+                    # ============================================================
+
+                    metric, stds, order, combs, total_sum_per_taxel = compute_metrics(MagneticField, combinations_k)
+
+                    # Mejor combinación
+                    best_idx = int(np.argmax(metric))
+                    best_metric = float(metric[best_idx])
+                    best_combination = combs[best_idx]
+
+                    self.objectives.append(best_metric)
 
         self.t += 1
         self.current_iter += 1
@@ -599,7 +703,7 @@ def createScene(rootNode, config):
     CFFMO = CFFNode.addObject('MechanicalObject', position='@loader.position') 
     CFFSphereROI = CFFNode.addObject('SphereROI', template="Vec3d", name='CFFSphereROI', centers=[0, 0 ,5*1e-3], radii=[config.indenterRadius], drawSphere=True, drawPoints = True, drawSize=6 )
     CFFSphereROI.init()              
-    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, 20], showArrowSize=3*1e-3)                               
+    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, 0], showArrowSize=3*1e-3)                               
     CFFNode.addObject("BarycentricMapping")
 
 

@@ -89,7 +89,7 @@ class Config(GmshDesignOptimization):
         self.Height = 5 
 
         # ----Elasticity parameters----
-        self.PoissonRatio = 0.4         # Poisson's ratio of the material
+        self.PoissonRatio = 0.47         # Poisson's ratio of the material
         self.YoungsModulus = 151685     # Young's modulus DSkin30 - 40psi (material stiffness)
 
         # --- Magnet Parameters ---
@@ -111,9 +111,9 @@ class Config(GmshDesignOptimization):
 
         
         # --- Magnet density ---
-        self.MagnetDensity_x = 0.05
-        self.MagnetDensity_y = 0.05      
-        self.MagnetGridOrientation = 45  # degrees
+        self.MagnetDensity_x = 0.01
+        self.MagnetDensity_y = 0.035
+        self.MagnetGridOrientation = 0  # degrees
         self.delta_x = 0
         self.delta_y = 0
 
@@ -126,7 +126,6 @@ class Config(GmshDesignOptimization):
         # ------------------------------------------------------------------------------------
         #                         End of configurable parameters 
         # ------------------------------------------------------------------------------------
-  
 
         # ---- Generate grid points on the XY plane for magnets and sensors----
         self.MagnetGridPoints = cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=2.5, margin_y=2.5)
@@ -139,6 +138,7 @@ class Config(GmshDesignOptimization):
         # ---- Number of magnets and sensors ----
         self.NMagnets = len(self.MagnetCenters)    
         self.NSensors = len(self.SensorCenters)
+        self.NumberSensors = 14    # design variable for selection of number of sensors
 
         # ---- Rigid Articulation center 3D coordinates ----
         self.rigidArticulationCenter = np.array([[-self.Length/2, 0, 0]])
@@ -198,19 +198,21 @@ class Config(GmshDesignOptimization):
             "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.05], 
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
             "delta_x": [self.delta_x, -0.5, 0.5],
-            "delta_y": [self.delta_y, -0.5, 0.5]
+            "delta_y": [self.delta_y, -0.5, 0.5], 
+            "NumberSensors": [self.NumberSensors, 1, 15.0],
         }
     
 
     def get_objective_data(self):
         return {
-        "MagneticSensitivity": ["maximize", 142],
-        "MagnetNumber": ["minimize", 142]
+        "MagnetNumber": ["minimize", 142],
+        "SensorNumber": ["minimize", 142],
+        "MagneticSensitivity": ["maximize", 142],     
         }
 
     def get_assessed_together_objectives(self):
         # return [["MagneticSensitivity", "SensorsNumber"]]
-        return [["MagneticSensitivity", "MagnetNumber"]]                    
+        return [["MagnetNumber", "SensorNumber", "MagneticSensitivity"]]                    
 
     def set_design_variables(self, new_values):
         super(Config,self).set_design_variables(new_values)
