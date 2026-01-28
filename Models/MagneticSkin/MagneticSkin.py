@@ -210,7 +210,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.t = 0
 
         self.wait_counter = 0 
-        self.frames_to_wait = 20
+        self.frames_to_wait = 24
         self.waiting = False
         self.current_point =  0
         self.current_force_idx = 0
@@ -272,7 +272,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
             indices = spring.findData('points').value
 
         identer_position = [0, 0, 0]
-        set_force = -200000  # ver unidades de medida 
+        set_force = -800000  # ver unidades de medida 
 
         if self.t > 30:
 
@@ -334,15 +334,15 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         
         GlobalMagneticField = np.array(GlobalMagneticField) #(15, 3)
 
-
-
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] 
+
+
+        # remover el offset, la prueba de los 40 trials la hice sin offset
+
         # if self.t == 0:
         #     offset = GlobalMagneticField_index_real
 
         # GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] - offset
-
-
 
 
         if self.offset is None:
@@ -353,6 +353,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         GlobalMagneticField_index_real = GlobalMagneticField_index_real - self.offset
 
         print('GlobalMagneticField_index_real', GlobalMagneticField_index_real)
+        np.savetxt("campo_global.txt", GlobalMagneticField_index_real)
+        
 
         if self.waiting:
             self.frames_counter += 1
@@ -372,12 +374,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
         if self.current_iter == self.max_iter-1:
             
-            # calcular mejores combinaciones 
-
-
-
-
-
             current_objectives_names = self.config.get_currently_assessed_objectives()
             print(f"[Objective] Current objectives: {current_objectives_names}")
 
@@ -397,24 +393,14 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
                 # Sensibility metric. 
                 if "MagneticSensitivity" == current_objective_name:
-
-                    # print('nnnn', self.data_MagneticField)
-                    # print('Shape data_MagneticField:', np.array(self.data_MagneticField).shape)
-
                     MagneticField = np.concatenate(self.data_MagneticField, axis=0)
-                    # print('MagneticField.shape', MagneticField.shape)
 
-                    # ============================================================
                     # Combinations
-                    # ============================================================
                     index_sensors = np.arange(15)
                     k = int(self.config.NumberSensors)  
                     combinations_k = list(itertools.combinations(index_sensors, k))
 
-                    # ============================================================
                     # Metric
-                    # ============================================================
-
                     metric, stds, order, combs, total_sum_per_taxel = compute_metrics(MagneticField, combinations_k)
 
                     # Mejor combinación
@@ -636,30 +622,30 @@ def createScene(rootNode, config):
     model.addObject('UniformMass', totalMass='0.09')
     model.addObject('TetrahedronFEMForceField', template='Vec3', name='FEM', method='large', poissonRatio=config.PoissonRatio,  youngModulus=config.YoungsModulus) 
     #CAJA PART1              
-    model.addObject('BoxROI', name='BaseROI', box=config.BoxROIFixCoords_base, drawBoxes=True, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")              
+    model.addObject('BoxROI', name='BaseROI', box=config.BoxROIFixCoords_base, drawBoxes=False, position="@tetras.rest_position", tetrahedra="@container.tetrahedra", drawPoints = False, drawSize = 3)              
     model.addObject('RestShapeSpringsForceField', points='@BaseROI.indices', stiffness='1e10')
 
               
     model.addObject("SubsetMultiMapping",name="subsetMapping",template="Vec3d,Vec3d", input='@'+deformableNode.getPathName()+'/DeformableMech' + ' ' + '@'+RigidifiedNode.getPathName()+'/RigidifiedMesh' , output='@./tetras', indexPairs=indexPairs.tolist())
 
         #Parte que se mueve para estirar
-    model.addObject('BoxROI', name='EndROI', box=config.BoxROIFixCoords1, drawBoxes=True, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")              
+    model.addObject('BoxROI', name='EndROI', box=config.BoxROIFixCoords1, drawBoxes=False, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")              
     # model.addObject('RestShapeSpringsForceField', points='@EndROI.indices', stiffness='1e12', external_rest_shape="@/ExternalRefNode/ExternalMO")              
 
     #Parte de la Base Fija (se mueven los nodos y se fijan en t=30)
-    model.addObject('BoxROI', name='BaseFixROI', box=config.BoxROIFixCoords, drawBoxes=True, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")            
+    model.addObject('BoxROI', name='BaseFixROI', box=config.BoxROIFixCoords, drawBoxes=False, position="@tetras.rest_position", tetrahedra="@container.tetrahedra")            
     # model.addObject('RestShapeSpringsForceField', name='BaseFixSpring' , points='@BaseFixROI.indices', stiffness='0', external_rest_shape="@/ExternalRefNodeBase/ExternalBaseMO")
 
 
     #    #Parte que se mueve
     ExternalRefNode = rootNode.addChild("ExternalRefNode")
-    ExternalRefNode.addObject('MechanicalObject', name='ExternalMO', template='Vec3', showObject=True, showObjectScale=3, showColor = [0,.7,.0],
+    ExternalRefNode.addObject('MechanicalObject', name='ExternalMO', template='Vec3', showObject=False, showObjectScale=3, showColor = [0,.7,.0],
                                 showIndices=False, showIndicesScale=4e-5,
                                 position='@../solverNode/RigidNode/RigidifiedNode/deformableNode/model/EndROI.pointsInROI')
 
     #Parte para fijar la base 
     ExternalRefNodeBase = rootNode.addChild("ExternalRefNodeBase")
-    ExternalRefNodeBase.addObject('MechanicalObject', name='ExternalBaseMO', template='Vec3', showObject=True, showObjectScale=3, showColor = [0,0,.7],
+    ExternalRefNodeBase.addObject('MechanicalObject', name='ExternalBaseMO', template='Vec3', showObject=False, showObjectScale=3, showColor = [0,0,.7],
                                     showIndices=False, showIndicesScale=4e-5,
                                     position='@../solverNode/RigidNode/RigidifiedNode/deformableNode/model/BaseFixROI.pointsInROI')
                         
@@ -701,9 +687,9 @@ def createScene(rootNode, config):
                                                     lc= config.SurfaceMeshCharacteristicLength))
 
     CFFMO = CFFNode.addObject('MechanicalObject', position='@loader.position') 
-    CFFSphereROI = CFFNode.addObject('SphereROI', template="Vec3d", name='CFFSphereROI', centers=[0, 0 ,5*1e-3], radii=[config.indenterRadius], drawSphere=True, drawPoints = True, drawSize=6 )
+    CFFSphereROI = CFFNode.addObject('SphereROI', template="Vec3d", name='CFFSphereROI', centers=[0, 0 ,5*1e-3], radii=[config.indenterRadius], drawSphere=False, drawPoints = False, drawSize=6 )
     CFFSphereROI.init()              
-    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, 0], showArrowSize=3*1e-3)                               
+    CFF = CFFNode.addObject('ConstantForceField', name='CFF', template='Vec3', indices='@CFFSphereROI.indices', totalForce=[0, 0, 0], showArrowSize=0.1*1e-3)                               
     CFFNode.addObject("BarycentricMapping")
 
 

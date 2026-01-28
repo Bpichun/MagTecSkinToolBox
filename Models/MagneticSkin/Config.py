@@ -98,7 +98,7 @@ class Config(GmshDesignOptimization):
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
-        self.VolumeMeshCharacteristicLength = 1.4
+        self.VolumeMeshCharacteristicLength = 1.2
 
         self.GridRowsSensors = 3
         self.GridColsSensors = 5
@@ -138,7 +138,7 @@ class Config(GmshDesignOptimization):
         # ---- Number of magnets and sensors ----
         self.NMagnets = len(self.MagnetCenters)    
         self.NSensors = len(self.SensorCenters)
-        self.NumberSensors = 14    # design variable for selection of number of sensors
+        self.NumberSensors = 15    # design variable for selection of number of sensors
 
         # ---- Rigid Articulation center 3D coordinates ----
         self.rigidArticulationCenter = np.array([[-self.Length/2, 0, 0]])
