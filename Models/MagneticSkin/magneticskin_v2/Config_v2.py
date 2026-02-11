@@ -8,6 +8,7 @@ Created on Mon May 19 09:29:11 2025
 Config for the MagTecSkinSensor
 """
 
+
 import sys
 import pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).parent.absolute())+"/../")
@@ -15,7 +16,64 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent.absolute()))
 
 from BaseConfig import GmshDesignOptimization
 import numpy as np 
-import magtec
+
+
+def generate_grid(length, width, margin_x, margin_y, rows, cols):
+    '''Generates a 2D grid of (x, y) points within a rectangle'''
+    x = np.linspace(-(length - margin_x) / 2, (length - margin_x) / 2, cols)
+    y = np.linspace(-(width - margin_y) / 2, (width - margin_y) / 2, rows)
+    X, Y = np.meshgrid(x, y)
+    return np.column_stack((X.ravel(), Y.ravel()))
+
+
+def generate_infinite_grid(spacing_x, spacing_y, n, angle_deg, origin=(0.0, 0.0)):
+    xs = np.arange(-n, n+1) * spacing_x
+    ys = np.arange(-n, n+1) * spacing_y
+    X, Y = np.meshgrid(xs, ys)
+    points = np.column_stack((X.ravel(), Y.ravel()))
+
+    theta = np.deg2rad(angle_deg)
+    R = np.array([
+        [np.cos(theta), -np.sin(theta)],
+        [np.sin(theta),  np.cos(theta)]
+    ])
+    points = points @ R.T
+
+    points[:, 0] += origin[0]
+    points[:, 1] += origin[1]
+
+    return points
+
+def cut_grid(points, length, width, margin_x, margin_y):
+    xmin = -(length - margin_x) / 2
+    xmax = +(length - margin_x) / 2
+    ymin = -(width  - margin_y) / 2
+    ymax = +(width  - margin_y) / 2
+
+    mask = (
+        (points[:, 0] >= xmin) & (points[:, 0] <= xmax) &
+        (points[:, 1] >= ymin) & (points[:, 1] <= ymax)
+    )
+    return points[mask]
+
+
+
+def getBoxroiCoords(centers, lengths, tolerance):
+    '''Generates the coordinates for creating a BoxROI'''
+    lx, ly, lz = lengths
+    boxes = []
+
+    for px, py, pz in centers:
+        box = [
+            px - (lx / 2 + tolerance),
+            py - (ly / 2 + tolerance),
+            pz - (lz / 2 + tolerance),
+            px + (lx / 2 + tolerance),
+            py + (ly / 2 + tolerance),
+            pz + (lz / 2 + tolerance)
+        ]
+        boxes.append(box)
+    return boxes
 
 
 class Config(GmshDesignOptimization):
@@ -25,7 +83,7 @@ class Config(GmshDesignOptimization):
         
     def init_model_parameters(self):
 
-        # ----Geometric parameters (mm)----
+        # ----Geometric parameters----
         self.Length = 50
         self.Width = 20 
         self.Height = 5 
@@ -55,34 +113,47 @@ class Config(GmshDesignOptimization):
         # --- Magnet density ---
         self.MagnetDensity_x = 0.01
         self.MagnetDensity_y = 0.035
-        self.MagnetGridOrientation = 0  
+        self.MagnetGridOrientation = 0  # degrees
         self.delta_x = 0
         self.delta_y = 0
 
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
-        self.grid_xy = magtec.Utils.generate_infinite_grid(self.spacing_x, 
-                                                           self.spacing_y, n=30, 
-                                                           angle_deg=self.MagnetGridOrientation, 
-                                                           origin=(self.delta_x, self.delta_y))
+        self.grid_xy = generate_infinite_grid(self.spacing_x, self.spacing_y, n=20, angle_deg=self.MagnetGridOrientation, origin=(self.delta_x, self.delta_y))
 
 
+
+
+
+        self.SensorDensity_x = 0.009
+        self.SensorDensity_y = 0.03928 
+        self.SensorGridOrientation = 45  # degrees
+        self.delta_x_sensor = -0.5
+        self.delta_y_sensor = -0.5
+
+        self.spacing_x_sensor = np.sqrt(1.0 / self.SensorDensity_x)
+        self.spacing_y_sensor = np.sqrt(1.0 / self.SensorDensity_y)
+        self.grid_xy_sensor = generate_infinite_grid(self.spacing_x_sensor, self.spacing_y_sensor, n=10, angle_deg=self.SensorGridOrientation, origin=(self.delta_x_sensor, self.delta_y_sensor))
+
+
+        
         # ------------------------------------------------------------------------------------
         #                         End of configurable parameters 
         # ------------------------------------------------------------------------------------
 
         # ---- Generate grid points on the XY plane for magnets and sensors----
-        self.MagnetGridPoints = magtec.Utils.cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=2.5, margin_y=2.5)
-        self.SensorGridPoints = magtec.Utils.generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsSensors,  self.GridColsSensors)
-
+        self.MagnetGridPoints = cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=2.5, margin_y=2.5)
+        # self.SensorGridPoints = generate_grid(self.Length, self.Width, self.margin_x, self.margin_y, self.GridRowsSensors,  self.GridColsSensors)
+        self.SensorGridPoints = cut_grid(self.grid_xy_sensor, length=self.Length, width=self.Width, margin_x=5, margin_y=5)
+        
         # ---- Magnets and Sensors centers 3D coordinates ---- 
         self.MagnetCenters = [[px, py, 4 ] for px, py in self.MagnetGridPoints]
-        self.SensorCenters = [[px, py, 1.25 ] for px, py in self.SensorGridPoints] 
+        self.SensorCenters = [[px, py, 1.25 ] for px, py in self.SensorGridPoints]  # - ArticulationAxis in z axis for Simulationthumbfinger  
 
         # ---- Number of magnets and sensors ----
         self.NMagnets = len(self.MagnetCenters)    
         self.NSensors = len(self.SensorCenters)
-        self.NumberSensors = 15    # design variable for selection of number of sensors
+        # self.NumberSensors = 15    # design variable for selection of number of sensors
 
         # ---- Rigid Articulation center 3D coordinates ----
         self.rigidArticulationCenter = np.array([[-self.Length/2, 0, 0]])
@@ -91,22 +162,22 @@ class Config(GmshDesignOptimization):
         self.rigidObjects = np.vstack([self.rigidArticulationCenter, self.SensorCenters, self.MagnetCenters]).tolist()
 
         # Defines a fixed region of interest (ROI) box with margins around the magnetic skin (rigid)
-        self.BoxROIFixCoords = magtec.Utils.getBoxroiCoords(centers = [[-0, 0, 0]] , #3.5
+        self.BoxROIFixCoords = getBoxroiCoords(centers = [[-0, 0, 0]] , #3.5
                                         lengths = [self.Length/1.01, self.Width, self.BoxTolerance], #2.3
                                         tolerance = self.BoxTolerance)
 
         # Defines a rigidified region box on the opposite side (articulation)
-        self.BoxROIFixCoordsArt = magtec.Utils.getBoxroiCoords(centers = [[-self.Length/4  , 0, 0]] , 
+        self.BoxROIFixCoordsArt = getBoxroiCoords(centers = [[-self.Length/4  , 0, 0]] , 
                                             lengths = [self.Length/2, self.Width, self.BoxTolerance],
                                             tolerance = self.BoxTolerance)
 
 
         # ---- BoxROI coordinates for sensors and magnets----
-        self.SensorBoxCoords = magtec.Utils.getBoxroiCoords(centers = self.SensorCenters, 
+        self.SensorBoxCoords = getBoxroiCoords(centers = self.SensorCenters, 
                                         lengths = (3, 3, 1.5), 
                                         tolerance = self.BoxTolerance)
 
-        self.MagnetBoxCoords = magtec.Utils.getBoxroiCoords(centers = self.MagnetCenters, 
+        self.MagnetBoxCoords = getBoxroiCoords(centers = self.MagnetCenters, 
                                         lengths = (self.MagnetSide, self.MagnetSide, self.MagnetSide),
                                         tolerance = self.BoxTolerance)
 
@@ -132,7 +203,7 @@ class Config(GmshDesignOptimization):
             ]
 
         self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, self.SensorBoxCoords, self.MagnetBoxCoords]).tolist()
-        self.MagnetSensors = np.vstack([ self.MagnetBoxCoords, self.SensorBoxCoords]).tolist()
+        # self.MagnetSensors = np.vstack([ self.MagnetBoxCoords, self.SensorBoxCoords]).tolist()
    
 
 
@@ -143,43 +214,67 @@ class Config(GmshDesignOptimization):
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
             "delta_x": [self.delta_x, -0.5, 0.5],
             "delta_y": [self.delta_y, -0.5, 0.5], 
-            "NumberSensors": [self.NumberSensors, 1, 15.0],
+            "SensorDensity_x": [self.SensorDensity_x, 0.009, 0.011], 
+            "SensorDensity_y": [self.SensorDensity_y, 0.03, 0.05], 
+            "SensorGridOrientation": [self.SensorGridOrientation, 0.0, 45],
+            "delta_x_sensor": [self.delta_x_sensor, -0.5, 0.5],
+            "delta_y_sensor": [self.delta_y_sensor, -0.5, 0.5],
         }
     
 
     def get_objective_data(self):
         return {
-            "MagnetNumber": ["minimize", 145],
-            "SensorNumber": ["minimize", 145],
-            "MagneticSensitivity": ["maximize", 745],     
+        "MagnetNumber": ["minimize", 300],
+        "SensorNumber": ["minimize", 300],
+        "MagneticSensitivity": ["maximize", 300],     
         }
 
     def get_assessed_together_objectives(self):
+        # return [["MagneticSensitivity", "SensorsNumber"]]
         return [["MagnetNumber", "SensorNumber", "MagneticSensitivity"]]                    
 
     def set_design_variables(self, new_values):
         super(Config,self).set_design_variables(new_values)
 
         # ---- Update dependent parameters ----
+
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
 
-        self.grid_xy = magtec.Utils.generate_infinite_grid(self.spacing_x, self.spacing_y, 
-                                              n=30, angle_deg=self.MagnetGridOrientation, 
+        self.grid_xy = generate_infinite_grid(self.spacing_x, self.spacing_y, 
+                                              n=20, angle_deg=self.MagnetGridOrientation, 
                                               origin=(self.delta_x, self.delta_y))
         
-        self.MagnetGridPoints = magtec.Utils.cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=3, margin_y=3)
+        self.MagnetGridPoints = cut_grid(self.grid_xy, length=self.Length, width=self.Width, margin_x=3, margin_y=3)
         self.MagnetCenters = [[px, py, 4 ] for px, py in self.MagnetGridPoints]
-        self.NMagnets = len(self.MagnetCenters)    
+        self.NMagnets = len(self.MagnetCenters)
+
+
+        # ---- Generate grid points on the XY plane for sensors----
+        self.spacing_x_sensor = np.sqrt(1.0 / self.SensorDensity_x)
+        self.spacing_y_sensor = np.sqrt(1.0 / self.SensorDensity_y)
+        self.grid_xy_sensor = generate_infinite_grid(self.spacing_x_sensor, self.spacing_y_sensor,
+                                                     n=10, angle_deg=self.SensorGridOrientation, 
+                                                     origin=(self.delta_x_sensor, self.delta_y_sensor))
+
+        self.SensorGridPoints = cut_grid(self.grid_xy_sensor, length=self.Length, width=self.Width, margin_x=5, margin_y=5)
+        self.SensorCenters = [[px, py, 1.25 ] for px, py in self.SensorGridPoints]  
+        self.NSensors = len(self.SensorCenters)
+
+
 
         self.rigidObjects = np.vstack([self.rigidArticulationCenter,
                                        self.SensorCenters, 
                                        self.MagnetCenters]).tolist()
         
-        self.MagnetBoxCoords = magtec.Utils.getBoxroiCoords(centers = self.MagnetCenters, 
+        self.MagnetBoxCoords = getBoxroiCoords(centers = self.MagnetCenters, 
                                                lengths = (self.MagnetSide, self.MagnetSide, self.MagnetSide),
                                                tolerance = self.BoxTolerance)
         
+        self.SensorBoxCoords = getBoxroiCoords(centers = self.SensorCenters, 
+                                            lengths = (3, 3, 1.5), 
+                                            tolerance = self.BoxTolerance)       
+            
         self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, 
                                                 self.SensorBoxCoords, 
                                                 self.MagnetBoxCoords]).tolist()

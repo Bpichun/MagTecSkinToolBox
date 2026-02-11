@@ -49,6 +49,49 @@ def simulation_loop(config, scene_lib):
     return scores
 
 
+# def evaluate_fitness(config, scene_lib):
+#     """
+#     Manage simulation and objective computation for a set of sampled parameters
+#     ----------
+#     Inputs
+#     ----------
+#     config: Config
+#         Config class describing the optimization problem
+#     scene_lib: importlib link
+#         Link to the scene library.
+#     ----------
+#     Outputs
+#     ----------
+#     final_scores: list of float
+#         Score for each objective function
+#     """
+#     evaluated_objectives = []
+#     all_scores = {}
+#     for objective_name in config.get_objective_data():
+#         # Check objective has not already been evaluated
+#         if objective_name not in evaluated_objectives:
+#             # Check if objective can be assessed jointly with another objective and evaluate fitness functions accordingly
+#             joint_objective_id = next((i for i,v in enumerate(config.get_assessed_together_objectives()) if objective_name in v), None) # Find id of objective if in list
+#             if joint_objective_id != None:
+#                 config.set_currently_assessed_objectives(config.get_assessed_together_objectives()[joint_objective_id])
+#                 for joint_objective_name in config.get_assessed_together_objectives()[joint_objective_id]:
+#                     evaluated_objectives.append(joint_objective_name)
+#                     scores = simulation_loop(config, scene_lib)
+#                 for i in range(len(config.get_assessed_together_objectives()[joint_objective_id])):
+#                     all_scores[config.get_assessed_together_objectives()[joint_objective_id][i]] = scores[i]
+#             else:
+#                 config.set_currently_assessed_objectives(objective_name)
+#                 all_scores[objective_name] = simulation_loop(config, scene_lib)[0]
+    
+    
+#     # Reorder results
+#     final_scores = []
+#     for objective_name in config.get_objective_data():
+#         final_scores.append(all_scores[objective_name])
+#     return final_scores
+  
+
+#benja la comentada es la original (arriba)
 def evaluate_fitness(config, scene_lib):
     """
     Manage simulation and objective computation for a set of sampled parameters
@@ -64,32 +107,39 @@ def evaluate_fitness(config, scene_lib):
     ----------
     final_scores: list of float
         Score for each objective function
+
     """
+    
     evaluated_objectives = []
     all_scores = {}
+
     for objective_name in config.get_objective_data():
-        # Check objective has not already been evaluated
         if objective_name not in evaluated_objectives:
-            # Check if objective can be assessed jointly with another objective and evaluate fitness functions accordingly
-            joint_objective_id = next((i for i,v in enumerate(config.get_assessed_together_objectives()) if objective_name in v), None) # Find id of objective if in list
-            if joint_objective_id != None:
-                config.set_currently_assessed_objectives(config.get_assessed_together_objectives()[joint_objective_id])
-                for joint_objective_name in config.get_assessed_together_objectives()[joint_objective_id]:
+            joint_objective_id = next(
+                (i for i, v in enumerate(config.get_assessed_together_objectives()) if objective_name in v),
+                None
+            )
+            if joint_objective_id is not None:
+                current_group = config.get_assessed_together_objectives()[joint_objective_id]
+                config.set_currently_assessed_objectives(current_group)
+
+                scores = simulation_loop(config, scene_lib)
+
+                # Marcar objetivos como evaluados y guardar resultados
+                for i, joint_objective_name in enumerate(current_group):
                     evaluated_objectives.append(joint_objective_name)
-                    scores = simulation_loop(config, scene_lib)
-                for i in range(len(config.get_assessed_together_objectives()[joint_objective_id])):
-                    all_scores[config.get_assessed_together_objectives()[joint_objective_id][i]] = scores[i]
+                    all_scores[joint_objective_name] = scores[i]
+
             else:
                 config.set_currently_assessed_objectives(objective_name)
                 all_scores[objective_name] = simulation_loop(config, scene_lib)[0]
-    
-    
-    # Reorder results
-    final_scores = []
-    for objective_name in config.get_objective_data():
-        final_scores.append(all_scores[objective_name])
+
+    final_scores = [all_scores[obj] for obj in config.get_objective_data()]
     return final_scores
-  
+
+
+
+
 def wrap_evaluate_fitness(config):
     """
     Return a wrapped function that evaluate a geometry from an updated config.

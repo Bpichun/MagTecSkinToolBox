@@ -45,4 +45,5 @@ class BaseFitnessEvaluationController(Sofa.Core.Controller):
             Number of dt steps for a the evaluation of the objective
         """
         if len(self.objectives) >= 1:
+            print("Objectives already computed benja: ", self.objectives)
             return self.objectives

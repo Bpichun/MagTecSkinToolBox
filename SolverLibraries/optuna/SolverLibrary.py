@@ -345,9 +345,11 @@ class SolverLibrary(BaseSolverLibrary):
         config: Config
             Config class describing the optimization problem 
         """
-
+        print('antes del tryal')
         # Sample new design variables 
         updated_config = self.sample_variables(trial, config)
+
+        print('hvdusrob', updated_config)
         
         try:
             # Generate geometry from sampled variables and simulate
@@ -363,6 +365,8 @@ class SolverLibrary(BaseSolverLibrary):
                     scores.append(inf)
                 elif direction == "maximize":
                     scores.append(- inf)
+
+
         return scores
 
         

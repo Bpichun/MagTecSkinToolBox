@@ -100,6 +100,7 @@ def create_magnet_boxes(magnet_boxes):
             dy = dy - y
             dz = dz - z
 
+
             tag = gmsh.model.occ.addBox(x, y, z, dx, dy, dz)
             tags.append((3, tag))
     gmsh.model.occ.synchronize()
