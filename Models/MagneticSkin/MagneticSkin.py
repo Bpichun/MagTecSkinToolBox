@@ -16,7 +16,6 @@ from splib3.animation import animate
 import rigidification  
 import Sofa.Core
 import Sofa.constants.Key as Key
-from scipy.spatial.transform import Rotation as R 
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 import itertools
 from Generation import MagneticSkin
@@ -41,7 +40,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.ModelNode = self.rootNode.solverNode.RigidNode.RigidifiedNode.deformableNode.model     
   
         # ----- SOFA nodes and objects -----
-        # self.RootNode = kwargs['RootNode']
         self.RigidMO = kwargs['RigidMO']
         self.CFF = kwargs['CFF']
         self.CFFSphereROI = kwargs['CFFSphereROI'] 
@@ -94,45 +92,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
     def MoveCFFSphereROI(self, pos):   
         self.CFFSphereROI.centers = [pos.tolist()]
 
-
-
-    def compute_magnetic_field(self, SensorPose, MagnetPose, NSensors, NMagnets):
-        """
-        Computes the magnetic field at each sensor position
-        """
-
-        # ---- Extract 3D positions of magnets and sensors ----
-        MagnetPosition = MagnetPose[:, :3]
-        SensorPosition = SensorPose[:, :3]
-
-        GlobalMagneticField = []
-
-
-        for j in range(NSensors):
-            
-            LocalMagneticField = []
-            quat_sensor = SensorPose[j, 3:7]
-            MiR_Sensor = R.from_quat(quat_sensor)
-
-            R_sensor_inv = MiR_Sensor.inv()
-            rotation_matrix_sensor_inv = R_sensor_inv.as_matrix()
-
-            for i in range(NMagnets):
-                Dist_Sensor_global = SensorPosition[j] - MagnetPosition[i]
-                
-                delta_local = rotation_matrix_sensor_inv @ Dist_Sensor_global           
-                quat_Magnet = MagnetPose[i, 3:7]             
-                MiR_Magnet = R.from_quat(quat_Magnet)  # (x, y, z, w)   
-                rotation_Matrix_Magnet = MiR_Magnet.as_matrix() 
-                rotation_Matrix = MiR_Sensor.inv().as_matrix() @ rotation_Matrix_Magnet
-                Direccion_momento_magnetico = rotation_Matrix[:, 2]
-                LocalMagneticField.append(magtec.Utils.calculate_B_field(delta_local, Direccion_momento_magnetico, self.config.mu_magnitude))
-
-            TotalMagneticField = np.sum(LocalMagneticField, axis=0)
-            GlobalMagneticField.append(TotalMagneticField)
-        
-        GlobalMagneticField = np.array(GlobalMagneticField) #(15, 3)
-        return GlobalMagneticField
     
     def apply_stretch(self, displacement):
         grab = self.rootNode.ExternalRefNode.getObject('ExternalMO')
@@ -222,7 +181,9 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         SensorPose = self.RigidMO.position.value[0:self.config.NSensors, :]
         MagnetPose = self.RigidMO.position.value[self.config.NSensors:, :]
 
-        GlobalMagneticField  = self.compute_magnetic_field(SensorPose, MagnetPose, self.config.NSensors, self.config.NMagnets)
+        simulator = magtec.MagneticFieldSimulator(mu_magnitude=self.config.mu_magnitude)
+        GlobalMagneticField = simulator.compute_field(SensorPose, MagnetPose)
+
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] 
 
 
