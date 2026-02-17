@@ -20,6 +20,8 @@ from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 import itertools
 from Generation import MagneticSkin
 import magtec 
+import time
+
 
 
 M_hw =np.array([[12,9,6,3,0],[13,10,7,4,1],[14,11,8,5,2]])
@@ -52,7 +54,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
 
         # ----- Time variables -----
-        self.frames_to_wait = 20
+        self.frames_to_wait = 30
+
         self.waiting = False
         self.current_point =  0
         self.force_wait_counter = 0
@@ -73,6 +76,10 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.save_offset_flag = False
         self.offset_per_stretch = {}
         self.data_per_stretch = { 0.0:  [], 0.10: [], 0.20: [] }
+
+
+        self.simulator = magtec.MagneticFieldSimulator(self.config.mu_magnitude)
+
 
 
         centers_taxels = magtec.Utils.get_taxels(xmin=-self.config.Length/2, xmax= self.config.Length/2, 
@@ -114,6 +121,10 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         spring.findData('stiffness').value = [spring_stiffness]
 
     def onAnimateBeginEvent(self, event):
+        start_total = time.perf_counter()
+
+        # ---- Campo magnético ----
+        t0 = time.perf_counter()
 
         # ---------------- APPLY STRETCH ----------------
         if self.state == "APPLY_STRETCH":
@@ -130,7 +141,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
         # ---------------- FIX BASE ----------------
         if self.state == "FIX_BASE":
-            self.fix_base(spring_stiffness=1e12)
+            self.fix_base(spring_stiffness=1e8)
             self.save_offset_flag = True
             self.state = "RUN_TRAJECTORY"
         
@@ -181,8 +192,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         SensorPose = self.RigidMO.position.value[0:self.config.NSensors, :]
         MagnetPose = self.RigidMO.position.value[self.config.NSensors:, :]
 
-        simulator = magtec.MagneticFieldSimulator(mu_magnitude=self.config.mu_magnitude)
-        GlobalMagneticField = simulator.compute_field(SensorPose, MagnetPose)
+
+        GlobalMagneticField = self.simulator.compute_field(SensorPose, MagnetPose)
 
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] 
 
@@ -261,8 +272,12 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
                     self.objectives.append(metric)
 
-        # self.t += 1
         self.current_iter += 1
+
+        t1 = time.perf_counter()
+        # print(f"Magnetic field time: {t1 - t0:.6f} s")
+
+
 
 
 
@@ -299,7 +314,9 @@ def createScene(rootNode, config):
         'Sofa.Component.Visual',
         'Sofa.GL.Component.Rendering3D',
         'Sofa.GUI.Component',
-        'Sofa.Component.MechanicalLoad'
+        'Sofa.Component.MechanicalLoad',
+        "AdvancedTimer"
+
     ]
 
     for name in pluginsList:
@@ -318,7 +335,8 @@ def createScene(rootNode, config):
     # Animation Loops and Solvers
     # -----------------------------
     rootNode.addObject('FreeMotionAnimationLoop')
-    rootNode.addObject('GenericConstraintSolver', tolerance="1e-12", maxIterations="10000")
+    rootNode.addObject('QPInverseProblemSolver', printLog='0', epsilon="1e-1", maxIterations="1000", tolerance="1e-5")
+    rootNode.addObject('GenericConstraintSolver', tolerance="1e-6", maxIterations="500")
     rootNode.addObject('DefaultVisualManagerLoop')
 
 
@@ -349,7 +367,7 @@ def createScene(rootNode, config):
                                                         length = config.Length, 
                                                         width = config.Width,
                                                         height = config.Height,                                                    
-                                                        magnet_boxes=config.MagnetBoxCoords,
+                                                        magnet_boxes=config.MagnetSensors,
                                                         # lc_surface = config.SurfaceMeshCharacteristicLength,
                                                         lc= config.VolumeMeshCharacteristicLength))
 
@@ -416,6 +434,7 @@ def createScene(rootNode, config):
     solverNode.addObject('SparseLDLSolver',name='preconditioner')
     solverNode.addObject('GenericConstraintCorrection', linearSolver='@preconditioner')
 
+
     # -----------------------------
     # Rigid Node
     # -----------------------------
@@ -452,13 +471,18 @@ def createScene(rootNode, config):
     # -----------------------------
     model = deformableNode.addChild('model')
     RigidifiedNode.addChild(model)
+
+    # model.addObject('EulerImplicitSolver', name='nodesolver')  
+    # model.addObject('ShewchukPCGLinearSolver', iterations='15', name='linearsolver', tolerance='1e-5', update_step='1')
+
+
     model.addObject('MeshVTKLoader', name='loader', 
                 filename = config.get_mesh_filename(mode = "Volume", refine = 0, 
                                                     generating_function = MagneticSkin, 
                                                     length = config.Length, 
                                                     width = config.Width,
                                                     height = config.Height,                                                    
-                                                    magnet_boxes=config.MagnetBoxCoords,
+                                                    magnet_boxes=config.MagnetSensors,
                                                     # MagnetCenters = config.MagnetCenters,
                                                     # lc_surface = config.SurfaceMeshCharacteristicLength,
                                                     lc= config.VolumeMeshCharacteristicLength))
@@ -520,7 +544,7 @@ def createScene(rootNode, config):
                                                     length = config.Length, 
                                                     width = config.Width,
                                                     height = config.Height,
-                                                    magnet_boxes= config.MagnetBoxCoords,
+                                                    magnet_boxes= config.MagnetSensors,
                                                     lc= config.SurfaceMeshCharacteristicLength))
     
 

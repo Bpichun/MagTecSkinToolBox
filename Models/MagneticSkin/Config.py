@@ -40,7 +40,7 @@ class Config(GmshDesignOptimization):
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
-        self.VolumeMeshCharacteristicLength = 1.2
+        self.VolumeMeshCharacteristicLength = 2.1 
 
         self.GridRowsSensors = 3
         self.GridColsSensors = 5
@@ -109,6 +109,9 @@ class Config(GmshDesignOptimization):
         self.MagnetBoxCoords = magtec.Utils.getBoxroiCoords(centers = self.MagnetCenters, 
                                         lengths = (self.MagnetSide, self.MagnetSide, self.MagnetSide),
                                         tolerance = self.BoxTolerance)
+        
+
+
 
 
         # --- right BoxROI para el borde derecho ---
@@ -151,7 +154,7 @@ class Config(GmshDesignOptimization):
         return {
             "MagnetNumber": ["minimize", 145],
             "SensorNumber": ["minimize", 145],
-            "MagneticSensitivity": ["maximize", 745],     
+            "MagneticSensitivity": ["maximize", 1085],     
         }
 
     def get_assessed_together_objectives(self):
@@ -183,3 +186,5 @@ class Config(GmshDesignOptimization):
         self.rigidObjectsBoxCoords = np.vstack([self.BoxROIFixCoordsArt, 
                                                 self.SensorBoxCoords, 
                                                 self.MagnetBoxCoords]).tolist()
+        
+        self.MagnetSensors = np.vstack([ self.MagnetBoxCoords, self.SensorBoxCoords]).tolist()

@@ -168,7 +168,7 @@ class Utils:
         return metric, stds, order, combs, total_sum_per_taxel
 
 
-class MagneticFieldModel:
+class MagneticFieldModel_v1:
     """
     Magnetic dipole field model.
 
@@ -215,7 +215,7 @@ class MagneticFieldModel:
 
 
 
-class MagneticFieldSimulator:
+class MagneticFieldSimulator_v1:
     """
     Simulates the magnetic field at multiple sensor positions from multiple magnets.
     """
@@ -267,10 +267,114 @@ class MagneticFieldSimulator:
                 rotation_matrix = R_sensor @ R_magnet
                 mu_direction = rotation_matrix[:, 2]
 
-                magnet_model = MagneticFieldModel(mu_direction, self.mu_magnitude)
+                magnet_model = MagneticFieldModel_v1(mu_direction, self.mu_magnitude)
                 B_local = magnet_model.compute_field(delta_local)
                 LocalMagneticField.append(B_local)
 
             GlobalMagneticField.append(np.sum(LocalMagneticField, axis=0))
 
         return np.array(GlobalMagneticField)
+    
+
+
+
+class MagneticFieldSimulator:
+    """
+    Simulates the magnetic field at multiple sensor positions from multiple magnets.
+
+    Parameters
+    ----------
+    sensor_pose : (NSensors, 7) array
+    magnet_pose : (NMagnets, 7) array
+
+    Returns
+    -------
+    GlobalMagneticField : (NSensors, 3)
+        Total magnetic field at each sensor
+    """
+
+
+    def __init__(self, mu_magnitude):
+        self.mu_magnitude = mu_magnitude
+
+
+    def _extract_positions(self, sensor_pose, magnet_pose):
+        SensorPosition = sensor_pose[:, :3]
+        MagnetPosition = magnet_pose[:, :3]
+        return SensorPosition, MagnetPosition
+
+    def _compute_delta_global(self, SensorPosition, MagnetPosition):
+        return (
+            SensorPosition[:, None, :] -
+            MagnetPosition[None, :, :]
+        )
+
+    def _compute_rotations(self, sensor_pose, magnet_pose):
+        R_sensor = R.from_quat(sensor_pose[:, 3:7]).inv().as_matrix()
+        R_magnet = R.from_quat(magnet_pose[:, 3:7]).as_matrix()
+        return R_sensor, R_magnet
+
+    def _compute_local_delta(self, R_sensor, delta_global):
+        return np.einsum(
+            'sij,smj->smi',
+            R_sensor,
+            delta_global
+        )
+
+    def _compute_mu_direction(self, R_sensor, R_magnet):
+        rotation_matrix = np.einsum(
+            'sij,mjk->smik',
+            R_sensor,
+            R_magnet
+        )
+        return rotation_matrix[..., 2]
+    
+
+    def _magneticDipoleModel(self, r: np.ndarray, mu_direction: np.ndarray) -> np.ndarray:
+        """
+        Parameters
+        ----------
+        r : (..., 3)
+            Position vector(s) relative to dipole
+        mu_direction : (..., 3)
+            Unit magnetic moment direction(s)
+
+        Returns
+        -------
+        B : (..., 3)
+            Magnetic field in microTesla
+        """
+
+        r = np.asarray(r, dtype=float)
+        mu_direction = np.asarray(mu_direction, dtype=float)
+        mu = mu_direction * self.mu_magnitude
+        r_norm = np.linalg.norm(r, axis=-1, keepdims=True)
+        r_hat = r / r_norm
+
+        tensor_term = (
+            3 * np.sum(r_hat * mu, axis=-1, keepdims=True) * r_hat
+            - mu
+            )
+        B = tensor_term / (4 * np.pi * (r_norm ** 3))
+
+        return B * 1e6  # microTesla
+
+
+    def compute_field(
+        self,
+        sensor_pose: np.ndarray,
+        magnet_pose: np.ndarray
+    ) -> np.ndarray:
+
+        SensorPosition, MagnetPosition = self._extract_positions(sensor_pose, magnet_pose)
+        delta_global = self._compute_delta_global(SensorPosition, MagnetPosition)
+
+        R_sensor, R_magnet = self._compute_rotations(sensor_pose, magnet_pose)
+        delta_local = self._compute_local_delta(R_sensor, delta_global)
+
+        mu_direction = self._compute_mu_direction(R_sensor, R_magnet)
+
+        B_all = self._magneticDipoleModel(delta_local, mu_direction)
+        GlobalMagneticField = np.sum(B_all, axis=1)
+
+        return GlobalMagneticField
