@@ -53,8 +53,8 @@ class Config(GmshDesignOptimization):
 
         
         # --- Magnet density ---
-        self.MagnetDensity_x = 0.01
-        self.MagnetDensity_y = 0.035
+        self.MagnetDensity_x = 0.0085
+        self.MagnetDensity_y = 0.039
         self.MagnetGridOrientation = 0  
         self.delta_x = 0
         self.delta_y = 0
@@ -141,8 +141,8 @@ class Config(GmshDesignOptimization):
 
     def get_design_variables(self):
         return {
-            "MagnetDensity_x": [self.MagnetDensity_x, 0.005, 0.05],   
-            "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.05], 
+            "MagnetDensity_x": [self.MagnetDensity_x, 0.005, 0.031],   
+            "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.041], 
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
             "delta_x": [self.delta_x, -0.5, 0.5],
             "delta_y": [self.delta_y, -0.5, 0.5], 

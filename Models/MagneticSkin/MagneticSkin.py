@@ -78,7 +78,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         self.data_per_stretch = { 0.0:  [], 0.10: [], 0.20: [] }
 
 
-        self.simulator = magtec.MagneticFieldSimulator(self.config.mu_magnitude)
+        self.simulator = magtec.MagneticFieldSimulator(mu_magnitude=self.config.mu_magnitude, distance_unit='mm')
 
 
 
@@ -123,9 +123,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
     def onAnimateBeginEvent(self, event):
         start_total = time.perf_counter()
 
-        # ---- Campo magnético ----
-        t0 = time.perf_counter()
-
+        
         # ---------------- APPLY STRETCH ----------------
         if self.state == "APPLY_STRETCH":
 
@@ -196,6 +194,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         GlobalMagneticField = self.simulator.compute_field(SensorPose, MagnetPose)
 
         GlobalMagneticField_index_real = GlobalMagneticField[sim_to_hw] 
+        # print(f"GlobalMagneticField_index_real: {GlobalMagneticField_index_real}")
 
 
         if self.save_offset_flag:
@@ -210,6 +209,9 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         else:
             GlobalMagneticField_index_real = GlobalMagneticField_index_real 
 
+
+        # print(f"GlobalMagneticField_index_real: {GlobalMagneticField_index_real}")
+
         if self.waiting:
             self.frames_counter += 1
  
@@ -217,6 +219,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
                 if len(self.data_per_stretch[self.current_stretch]) <= self.current_point:
                     self.data_per_stretch[self.current_stretch].append([])
+
+                    print(f"GlobalMagneticField_index_real: {GlobalMagneticField_index_real}")
 
                 self.data_per_stretch[self.current_stretch][self.current_point].append(GlobalMagneticField_index_real)
 
@@ -273,9 +277,6 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                     self.objectives.append(metric)
 
         self.current_iter += 1
-
-        t1 = time.perf_counter()
-        # print(f"Magnetic field time: {t1 - t0:.6f} s")
 
 
 

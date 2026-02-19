@@ -35,7 +35,7 @@ class Utils:
         y = np.linspace(-(width - margin_y) / 2, (width - margin_y) / 2, rows)
         X, Y = np.meshgrid(x, y)
         return np.column_stack((X.ravel(), Y.ravel()))
-    
+
     @staticmethod
     def generate_infinite_grid(spacing_x, spacing_y, n, angle_deg, origin=(0.0, 0.0)):
         xs = np.arange(-n, n+1) * spacing_x
@@ -294,8 +294,14 @@ class MagneticFieldSimulator:
     """
 
 
-    def __init__(self, mu_magnitude):
+    def __init__(self, mu_magnitude, distance_unit='m'):
+
+        if distance_unit not in ['m', 'mm']:
+            raise ValueError("distance_unit must be 'm' or 'mm'")
+        
+        self.distance_unit = distance_unit
         self.mu_magnitude = mu_magnitude
+
 
 
     def _extract_positions(self, sensor_pose, magnet_pose):
@@ -304,10 +310,12 @@ class MagneticFieldSimulator:
         return SensorPosition, MagnetPosition
 
     def _compute_delta_global(self, SensorPosition, MagnetPosition):
-        return (
-            SensorPosition[:, None, :] -
-            MagnetPosition[None, :, :]
-        )
+        factor = 1.0
+        if self.distance_unit == 'mm':
+            factor = 1e-3  # mm → m
+        SensorPosition = np.array(SensorPosition) * factor
+        MagnetPosition = np.array(MagnetPosition) * factor
+        return (SensorPosition[:, None, :] - MagnetPosition[None, :, :])
 
     def _compute_rotations(self, sensor_pose, magnet_pose):
         R_sensor = R.from_quat(sensor_pose[:, 3:7]).inv().as_matrix()
