@@ -35,23 +35,44 @@ def define_mesh_sizes(length, width, height, lc):
     # gmsh.option.setNumber("Mesh.CharacteristicLengthFactor", lc)
     # gmsh.option.setNumber("Mesh.CharacteristicLengthMin", lc_surface)
 
-def defineMeshSizesZones(center,  lc, tag, tolerance):   
-    # center[0], center[1], center[2] = center
-    gmsh.model.mesh.field.add("Box", tag)
-    gmsh.model.mesh.field.setNumber( tag, "VIn", lc)
-    gmsh.model.mesh.field.setNumber( tag, "VOut", 0.9)
-    gmsh.model.mesh.field.setNumber( tag, "XMin", center[0] - tolerance) # 
-    gmsh.model.mesh.field.setNumber( tag, "XMax", -14)#center[0] + tolerance)
-    gmsh.model.mesh.field.setNumber( tag, "YMin", 4)#center[1] - tolerance)
-    gmsh.model.mesh.field.setNumber( tag, "YMax", 6) #center[1] + tolerance)
-    gmsh.model.mesh.field.setNumber( tag, "ZMin", 0)#center[tag] - tolerance)
-    gmsh.model.mesh.field.setNumber( tag, "ZMax", 3)#center[tag] + tolerance)    
-    gmsh.model.mesh.field.setNumber( tag, "Thickness", 0.3)   
-    gmsh.model.mesh.field.setAsBackgroundMesh(tag)
+# def defineMeshSizesZones(center,  lc, tag, tolerance):   
+#     # center[0], center[1], center[2] = center
+#     gmsh.model.mesh.field.add("Box", tag)
+#     gmsh.model.mesh.field.setNumber( tag, "VIn", lc)
+#     gmsh.model.mesh.field.setNumber( tag, "VOut", 0.9)
+#     gmsh.model.mesh.field.setNumber( tag, "XMin", center[0] - tolerance) # 
+#     gmsh.model.mesh.field.setNumber( tag, "XMax", -14)#center[0] + tolerance)
+#     gmsh.model.mesh.field.setNumber( tag, "YMin", 4)#center[1] - tolerance)
+#     gmsh.model.mesh.field.setNumber( tag, "YMax", 6) #center[1] + tolerance)
+#     gmsh.model.mesh.field.setNumber( tag, "ZMin", 0)#center[tag] - tolerance)
+#     gmsh.model.mesh.field.setNumber( tag, "ZMax", 3)#center[tag] + tolerance)    
+#     gmsh.model.mesh.field.setNumber( tag, "Thickness", 0.3)   
+#     gmsh.model.mesh.field.setAsBackgroundMesh(tag)
 
-    gmsh.option.setNumber("Mesh.CharacteristicLengthExtendFromBoundary", 0)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 0)
-    gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
+#     gmsh.option.setNumber("Mesh.CharacteristicLengthExtendFromBoundary", 0)
+#     gmsh.option.setNumber("Mesh.CharacteristicLengthFromPoints", 0)
+#     gmsh.option.setNumber("Mesh.CharacteristicLengthFromCurvature", 0)
+
+
+def defineMeshSizesZones(center, lc, tag, tolerance):
+
+    gmsh.model.mesh.field.add("Box", tag)
+
+    gmsh.model.mesh.field.setNumber(tag, "VIn", lc)
+    gmsh.model.mesh.field.setNumber(tag, "VOut", 1e9)
+
+    gmsh.model.mesh.field.setNumber(tag, "XMin", center[0] - tolerance)
+    gmsh.model.mesh.field.setNumber(tag, "XMax", center[0] + tolerance)
+
+    gmsh.model.mesh.field.setNumber(tag, "YMin", center[1] - tolerance)
+    gmsh.model.mesh.field.setNumber(tag, "YMax", center[1] + tolerance)
+
+    gmsh.model.mesh.field.setNumber(tag, "ZMin", center[2] - tolerance)
+    gmsh.model.mesh.field.setNumber(tag, "ZMax", center[2] + tolerance)
+
+    gmsh.model.mesh.field.setNumber(tag, "Thickness", 0.0)
+
+
 
 ############################
 ### Basic CAD functions ###
@@ -134,28 +155,76 @@ def MagneticSkin(length, width, height, magnet_boxes, lc =0.1):
 
 
     define_mesh_sizes(length, width, height, lc)
+    return result
+#     field_ids = [1]  # campo global ya definido con tag=1
+
+#     for i, center in enumerate(magnet_centers):
+#         tag = 2 + i
+#         defineMeshSizesZones(center, lc_local, tag, tolerance=2)
+#         field_ids.append(tag)
 
 
-    # if center:
 
-        # for center in center:
+#     gmsh.model.mesh.field.add("Min", 100)
+#     gmsh.model.mesh.field.setNumbers(100, "FieldsList", field_ids)
+#     gmsh.model.mesh.field.setAsBackgroundMesh(100)
 
-        # # FieldId = 2  # 
-            # defineMeshSizesZones(length, width, height, lc, tag=2)
-    # defineMeshSizesZones(center, lc, tag=2, tolerance=2)
-    # for i, c in enumerate(centers):
+
+#     # if center:
+
+#         # for center in center:
+
+#         # # FieldId = 2  # 
+#             # defineMeshSizesZones(length, width, height, lc, tag=2)
+#     # defineMeshSizesZones(center, lc, tag=2, tolerance=2)
+#     # for i, c in enumerate(centers):
     
 
-    # if MagnetCenters is None or len(MagnetCenters) == 0:
-    #     raise ValueError("MagnetCenters no puede ser None ni vacío")
+#     # if MagnetCenters is None or len(MagnetCenters) == 0:
+#     #     raise ValueError("MagnetCenters no puede ser None ni vacío")
 
-    # defineMeshSizesZones(center=MagnetCenters[0], lc=lc, tag=2, tolerance=2)
+#     # defineMeshSizesZones(center=MagnetCenters[0], lc=lc, tag=2, tolerance=2)
 
-        # defineMeshSizesZones(BoxCoords=magnet_boxes[1], lc=lc, FieldId=2)
+#         # defineMeshSizesZones(BoxCoords=magnet_boxes[1], lc=lc, FieldId=2)
 
-        # gmsh.model.mesh.field.add("Min", 3)
-        # gmsh.model.mesh.field.setNumbers(3, "FieldsList", [1,2])
-        # gmsh.model.mesh.field.setAsBackgroundMesh(3)
+#         # gmsh.model.mesh.field.add("Min", 3)
+#         # gmsh.model.mesh.field.setNumbers(3, "FieldsList", [1,2])
+#         # gmsh.model.mesh.field.setAsBackgroundMesh(3)
 
 
-    return result
+#     return result
+
+# def MagneticSkin(length, width, height, magnet_boxes=None,
+#                  lc=2.1, lc_local=1.28, tolerance=1, refine=0):
+
+#     base = create_base_box(length, width, height)
+
+#     mags = create_magnet_boxes(magnet_boxes) if magnet_boxes else []
+#     result = cut_magnets_from_base(base, mags)
+
+#     # Campo global
+#     define_mesh_sizes(length, width, height, lc)
+
+#     field_ids = [1]
+
+#     if magnet_boxes:
+#         for i, box in enumerate(magnet_boxes):
+
+#             xmin, ymin, zmin, xmax, ymax, zmax = box
+
+#             center = [
+#                 0.5 * (xmin + xmax),
+#                 0.5 * (ymin + ymax),
+#                 0.5 * (zmin + zmax)
+#             ]
+
+#             tag = 2 + i
+#             defineMeshSizesZones(center, lc_local, tag, tolerance)
+#             field_ids.append(tag)
+
+#     # Combinar campos
+#     gmsh.model.mesh.field.add("Min", 100)
+#     gmsh.model.mesh.field.setNumbers(100, "FieldsList", field_ids)
+#     gmsh.model.mesh.field.setAsBackgroundMesh(100)
+
+#     return result

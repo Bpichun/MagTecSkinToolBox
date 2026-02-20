@@ -220,7 +220,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                 if len(self.data_per_stretch[self.current_stretch]) <= self.current_point:
                     self.data_per_stretch[self.current_stretch].append([])
 
-                    print(f"GlobalMagneticField_index_real: {GlobalMagneticField_index_real}")
+                    # print(f"GlobalMagneticField_index_real: {GlobalMagneticField_index_real}")
 
                 self.data_per_stretch[self.current_stretch][self.current_point].append(GlobalMagneticField_index_real)
 
@@ -369,6 +369,7 @@ def createScene(rootNode, config):
                                                         width = config.Width,
                                                         height = config.Height,                                                    
                                                         magnet_boxes=config.MagnetSensors,
+                                                        # magnet_boxes=None,
                                                         # lc_surface = config.SurfaceMeshCharacteristicLength,
                                                         lc= config.VolumeMeshCharacteristicLength))
 

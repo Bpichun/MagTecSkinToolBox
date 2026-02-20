@@ -40,7 +40,7 @@ class Config(GmshDesignOptimization):
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
-        self.VolumeMeshCharacteristicLength = 2.1 
+        self.VolumeMeshCharacteristicLength = 2.0
 
         self.GridRowsSensors = 3
         self.GridColsSensors = 5
@@ -48,16 +48,16 @@ class Config(GmshDesignOptimization):
         # margin 
         self.margin_x = 6
         self.margin_y = 10
-        self.BoxTolerance = 0.1
+        self.BoxTolerance = 0.2
         self.indenterRadius = 2
 
         
         # --- Magnet density ---
-        self.MagnetDensity_x = 0.0085
-        self.MagnetDensity_y = 0.039
-        self.MagnetGridOrientation = 0  
-        self.delta_x = 0
-        self.delta_y = 0
+        self.MagnetDensity_x = 0.031
+        self.MagnetDensity_y = 0.041
+        self.MagnetGridOrientation = 45  
+        self.delta_x = 4.5/2
+        self.delta_y = 3.8/2
 
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
@@ -111,9 +111,6 @@ class Config(GmshDesignOptimization):
                                         tolerance = self.BoxTolerance)
         
 
-
-
-
         # --- right BoxROI para el borde derecho ---
         self.BoxROIFixCoords_base = [
             self.Length / 2 + self.BoxTolerance, 
@@ -144,8 +141,8 @@ class Config(GmshDesignOptimization):
             "MagnetDensity_x": [self.MagnetDensity_x, 0.005, 0.031],   
             "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.041], 
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
-            "delta_x": [self.delta_x, -0.5, 0.5],
-            "delta_y": [self.delta_y, -0.5, 0.5], 
+            "delta_x": [self.delta_x, -4.5/2, 4.5/2],
+            "delta_y": [self.delta_y, -3.8/2, 3.8/2], 
             "NumberSensors": [self.NumberSensors, 1, 15.0],
         }
     
