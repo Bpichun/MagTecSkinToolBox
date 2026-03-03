@@ -40,7 +40,7 @@ class Config(GmshDesignOptimization):
 
         # --- Meshing parameters ---
         self.SurfaceMeshCharacteristicLength = 0.8
-        self.VolumeMeshCharacteristicLength = 2.0
+        self.VolumeMeshCharacteristicLength = 1.2
 
         self.GridRowsSensors = 3
         self.GridColsSensors = 5
@@ -55,9 +55,9 @@ class Config(GmshDesignOptimization):
         # --- Magnet density ---
         self.MagnetDensity_x = 0.031
         self.MagnetDensity_y = 0.041
-        self.MagnetGridOrientation = 45  
-        self.delta_x = 4.5/2
-        self.delta_y = 3.8/2
+        self.MagnetGridOrientation = 0  
+        self.delta_x =0
+        self.delta_y = 0
 
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)

@@ -238,7 +238,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                 current_objective_name =  current_objectives_names[i]
 
                 if "SensorNumber" == current_objective_name:
-                    sensors = self.config.NumberSensors 
+                    sensors = self.config.NumberSensors
                     print("Number of sensors =", sensors)
                     self.objectives.append(sensors)
 
@@ -256,7 +256,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
                     # Combinations
                     index_sensors = np.arange(15)
-                    k = int(self.config.NumberSensors)  
+                    k = int(self.config.NumberSensors)
+                    print('k', k)
                     combinations_k = list(itertools.combinations(index_sensors, k))
 
                     # Metric
