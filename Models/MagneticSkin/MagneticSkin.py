@@ -23,7 +23,6 @@ import magtec
 import time
 
 
-
 M_hw =np.array([[12,9,6,3,0],[13,10,7,4,1],[14,11,8,5,2]])
 A_hw = M_hw.flatten()
 sim_to_hw = np.argsort(A_hw) 
@@ -106,6 +105,13 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
         currentValue[0] = displacement
         grab.translation.value = currentValue
         grab.reinit()
+
+        grab2 = self.rootNode.External_baseROI.getObject('External_baseROIMO')
+        currentValue2 = list(grab2.translation.value)
+        currentValue2[0] = -displacement   
+        grab2.translation.value = currentValue2
+        grab2.reinit()
+
 
     def fix_base(self, spring_stiffness):
         base_roi = self.rootNode.solverNode.RigidNode.RigidifiedNode.deformableNode.model.getObject('BaseFixROI')
@@ -238,7 +244,7 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
                 current_objective_name =  current_objectives_names[i]
 
                 if "SensorNumber" == current_objective_name:
-                    sensors = self.config.NumberSensors
+                    sensors = 1/self.config.NumberSensors
                     print("Number of sensors =", sensors)
                     self.objectives.append(sensors)
 
@@ -496,7 +502,9 @@ def createScene(rootNode, config):
     model.addObject('TetrahedronFEMForceField', template='Vec3', name='FEM', method='large', poissonRatio=config.PoissonRatio,  youngModulus=config.YoungsModulus) 
     #CAJA PART1              
     model.addObject('BoxROI', name='BaseROI', box=config.BoxROIFixCoords_base, drawBoxes=False, position="@tetras.rest_position", tetrahedra="@container.tetrahedra", drawPoints = False, drawSize = 3)              
-    model.addObject('RestShapeSpringsForceField', points='@BaseROI.indices', stiffness='1e10')
+    # model.addObject('RestShapeSpringsForceField', points='@BaseROI.indices', stiffness='0')
+    # model.addObject('RestShapeSpringsForceField', points='@BaseROI.indices', stiffness='1e12', external_rest_shape="@External_baseROI/External_baseROIMO") 
+
 
               
     model.addObject("SubsetMultiMapping",
@@ -536,7 +544,16 @@ def createScene(rootNode, config):
     model.addObject('RestShapeSpringsForceField',name='StretchFixSpring', points='@EndROI.indices', stiffness='1e8', external_rest_shape='@ExternalRefNode/ExternalMO')
     model.addObject('RestShapeSpringsForceField',name='BaseFixSpring', points='@BaseFixROI.indices', stiffness='0', external_rest_shape='@ExternalRefNodeBase/ExternalBaseMO')
 
-        
+     #Parte para mover el lado derecho y estirar
+    External_baseROI = rootNode.addChild("External_baseROI")
+    External_baseROI.addObject('MechanicalObject', name='External_baseROIMO', template='Vec3', showObject=False, showObjectScale=4, showColor = [0,0,.7],
+                   showIndices=False, showIndicesScale=4e-5,
+                   position='@../solverNode/RigidNode/RigidifiedNode/deformableNode/model/BaseROI.pointsInROI')
+           
+
+    model.addObject('RestShapeSpringsForceField', points='@BaseROI.indices', stiffness='1e12', external_rest_shape="@External_baseROI/External_baseROIMO") 
+
+
     # ----------------------------------------
     # Visualization                          
     # ----------------------------------------

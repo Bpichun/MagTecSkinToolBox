@@ -144,18 +144,19 @@ def cut_magnets_from_base(base_dimtag, magnet_dimtags):
 ############################
 ### Public API functions ###
 ############################
-def MagneticSkin(length, width, height, magnet_boxes, lc =0.1):
-    """
-    Create full 3D MagneticSkin geometry and set mesh sizes.
-    Returns: (3, tag) of the volume.
-    """
-    base = create_base_box(length, width, height)
-    mags = create_magnet_boxes(magnet_boxes) if magnet_boxes else []
-    result = cut_magnets_from_base(base, mags)
+# def MagneticSkin(length, width, height, magnet_boxes, lc =0.1):
+#     """
+#     Create full 3D MagneticSkin geometry and set mesh sizes.
+#     Returns: (3, tag) of the volume.
+#     """
+#     base = create_base_box(length, width, height)
+#     mags = create_magnet_boxes(magnet_boxes) if magnet_boxes else []
+#     result = cut_magnets_from_base(base, mags)
 
 
-    define_mesh_sizes(length, width, height, lc)
-    return result
+#     define_mesh_sizes(length, width, height, lc)
+#     return result
+
 #     field_ids = [1]  # campo global ya definido con tag=1
 
 #     for i, center in enumerate(magnet_centers):
@@ -228,3 +229,39 @@ def MagneticSkin(length, width, height, magnet_boxes, lc =0.1):
 #     gmsh.model.mesh.field.setAsBackgroundMesh(100)
 
 #     return result
+
+
+
+# Este lo ocupo para definir zonas con mayor refinamiento en zonas, deco cambia el lc
+def MagneticSkin(length, width, height, magnet_boxes=None,
+                 lc=2100, lc_local=0.9, tolerance=1, refine=0):
+
+    base = create_base_box(length, width, height)
+
+    mags = create_magnet_boxes(magnet_boxes) if magnet_boxes else []
+    result = cut_magnets_from_base(base, mags)
+
+    define_mesh_sizes(length, width, height, lc)
+
+    field_ids = [1]
+
+    if magnet_boxes:
+        for i, box in enumerate(magnet_boxes):
+
+            xmin, ymin, zmin, xmax, ymax, zmax = box
+
+            center = [
+                0.5 * (xmin + xmax),
+                0.5 * (ymin + ymax),
+                0.5 * (zmin + zmax)
+            ]
+
+            tag = 2 + i
+            defineMeshSizesZones(center, lc_local, tag, tolerance)
+            field_ids.append(tag)
+
+    gmsh.model.mesh.field.add("Min", 100)
+    gmsh.model.mesh.field.setNumbers(100, "FieldsList", field_ids)
+    gmsh.model.mesh.field.setAsBackgroundMesh(100)
+
+    return result
