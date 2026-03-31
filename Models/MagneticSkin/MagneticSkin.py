@@ -243,8 +243,8 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
                 current_objective_name =  current_objectives_names[i]
 
-                if "SensorNumber" == current_objective_name:
-                    sensors = 1/self.config.NumberSensors
+                if "SensorNumber2" == current_objective_name:
+                    sensors = 15/self.config.NumberSensors
                     print("Number of sensors =", sensors)
                     self.objectives.append(sensors)
 

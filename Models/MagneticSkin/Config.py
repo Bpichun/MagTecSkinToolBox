@@ -150,12 +150,12 @@ class Config(GmshDesignOptimization):
     def get_objective_data(self):
         return {
             "MagnetNumber": ["minimize", 145],
-            "SensorNumber": ["maximize", 145],
+            "SensorNumber2": ["maximize", 145],
             "MagneticSensitivity": ["maximize", 1085],     
         }
 
     def get_assessed_together_objectives(self):
-        return [["MagnetNumber", "SensorNumber", "MagneticSensitivity"]]                    
+        return [["MagnetNumber", "SensorNumber2", "MagneticSensitivity"]]                    
 
     def set_design_variables(self, new_values):
         super(Config,self).set_design_variables(new_values)
