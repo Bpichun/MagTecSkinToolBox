@@ -234,7 +234,7 @@ def cut_magnets_from_base(base_dimtag, magnet_dimtags):
 
 # Este lo ocupo para definir zonas con mayor refinamiento en zonas, deco cambia el lc
 def MagneticSkin(length, width, height, magnet_boxes=None,
-                 lc=2100, lc_local=0.9, tolerance=1, refine=0):
+                 lc=2100, lc_local=1.38, tolerance=1, refine=0):
 
     base = create_base_box(length, width, height)
 

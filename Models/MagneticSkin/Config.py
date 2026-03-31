@@ -39,8 +39,8 @@ class Config(GmshDesignOptimization):
         self.mu_magnitude = 4.627195188680999e-08
 
         # --- Meshing parameters ---
-        self.SurfaceMeshCharacteristicLength = 0.8
-        self.VolumeMeshCharacteristicLength = 2.3
+        self.SurfaceMeshCharacteristicLength = 0.9
+        self.VolumeMeshCharacteristicLength = 3
 
         self.GridRowsSensors = 3
         self.GridColsSensors = 5
