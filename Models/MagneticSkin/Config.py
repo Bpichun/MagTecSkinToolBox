@@ -48,19 +48,27 @@ class Config(GmshDesignOptimization):
         # margin 
         self.margin_x = 6
         self.margin_y = 10
-        self.BoxTolerance = 0.2
+        self.BoxTolerance = 0.17
         self.indenterRadius = 2
 
         
         # --- Magnet density ---
         self.MagnetDensity_x = 0.031
-        self.MagnetDensity_y = 0.041
+        self.MagnetDensity_y = 0.0135
         self.MagnetGridOrientation = 0  
-        self.delta_x =0
-        self.delta_y = 0
+        # self.delta_x =0
+        # self.delta_y = 4
+        self.alpha_x = 0.4
+        self.alpha_y = 0.3
 
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
+
+
+
+        self.delta_x = self.alpha_x * self.spacing_x
+        self.delta_y = self.alpha_y * self.spacing_y
+
         self.grid_xy = magtec.Utils.generate_infinite_grid(self.spacing_x, 
                                                            self.spacing_y, n=30, 
                                                            angle_deg=self.MagnetGridOrientation, 
@@ -141,8 +149,10 @@ class Config(GmshDesignOptimization):
             "MagnetDensity_x": [self.MagnetDensity_x, 0.005, 0.031],   
             "MagnetDensity_y": [self.MagnetDensity_y, 0.005, 0.041], 
             "MagnetGridOrientation": [self.MagnetGridOrientation, 0.0, 45.0],
-            "delta_x": [self.delta_x, -4.5/2, 4.5/2],
-            "delta_y": [self.delta_y, -3.8/2, 3.8/2], 
+            # "delta_x": [self.delta_x, -4.5/2, 4.5/2],
+            # "delta_y": [self.delta_y, -3.8/2, 3.8/2], 
+            "alpha_x": [0.0, -0.5, 0.5],
+            "alpha_y": [0.0, -0.5, 0.5],
             "NumberSensors": [self.NumberSensors, 1, 15.0],
         }
     
@@ -163,6 +173,10 @@ class Config(GmshDesignOptimization):
         # ---- Update dependent parameters ----
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)
+
+        # ultimo cambio para definir el delta con el spacing
+        self.delta_x = self.alpha_x * self.spacing_x
+        self.delta_y = self.alpha_y * self.spacing_y
 
         self.grid_xy = magtec.Utils.generate_infinite_grid(self.spacing_x, self.spacing_y, 
                                               n=30, angle_deg=self.MagnetGridOrientation, 
