@@ -97,16 +97,24 @@ if len(pareto_points) > 0:
         name='Pareto Front'
     ))
 
+# fig.update_layout(
+#     title=f"Frente de Pareto: {study_name_target}",
+#     scene=dict(
+#         xaxis_title='MagnetNumber f_1(d)',
+#         yaxis_title='MagnetNumber f_2(d)',
+#         zaxis_title='MagneticSensitivity f_3(d)'
+#     ),
+#     title_x=0.5
+# )
 fig.update_layout(
     title=f"Frente de Pareto: {study_name_target}",
     scene=dict(
-        xaxis_title='Objetivo 1',
-        yaxis_title='Objetivo 2',
-        zaxis_title='Objetivo 3'
+        xaxis_title='MagnetNumber f<sub>1</sub>(d)',
+        yaxis_title='MagnetNumber f<sub>2</sub>(d)',
+        zaxis_title='MagneticSensitivity f<sub>3</sub>(d)'
     ),
     title_x=0.5
 )
-
 output_html = "pareto_front.html"
 fig.write_html(output_html)
 
