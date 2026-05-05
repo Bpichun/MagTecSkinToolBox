@@ -2,7 +2,7 @@
 #SBATCH --job-name=T1SRO25
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
-#SBATCH --mem=4G
+#SBATCH --mem=1G
 #SBATCH --error=test1.err
 #SBATCH --output=test1.out
 #SBATCH --mail-type=ALL
