@@ -1,0 +1,101 @@
+# ===========================
+# Description : Singularity definition file (.def) to create a singularity image file (.sif) for heuristic-based design optimization.
+# Authors : Benjamín Pichún Rioseco 
+# Date : April 18 2026
+#===========================
+
+Bootstrap: docker
+From: ubuntu:24.04
+
+%files
+    /home/benjamin/BenjaminRisLab/SoftRobots /Repos/Code/sofa/plugins/SoftRobots
+    /home/benjamin/BenjaminRisLab/SoftRobots.Inverse /Repos/Code/sofa/plugins/SoftRobots.Inverse
+
+%post
+    echo ">>> Installing build tools and dependencies..."
+    mkdir -p /Repos/Code
+    apt update && apt install -y \
+        wget git zsh curl sudo \
+        build-essential software-properties-common \
+        clang \
+        cmake \
+        ninja-build \
+        ccache \
+        libtinyxml2-dev \
+        qtbase5-dev qt5-qmake \
+        libopengl0 \
+        libboost-all-dev \
+        python3-dev pybind11-dev \
+        gcc-11 g++-11 \
+        libpng-dev libjpeg-dev libtiff-dev libglew-dev zlib1g-dev \
+        libeigen3-dev \
+        libstdc++-12-dev \
+        python3-numpy \
+        python3-scipy \
+        pybind11-dev \
+        zsh \
+        unzip \
+        sqlite3 \
+        locales \
+        locales-all \
+        python3-pip
+    
+    locale-gen en_US.UTF-8
+    update-locale LANG=en_US.UTF-8
+    
+    echo ">>> Installing Python packages..."
+    python3 -m pip install --no-cache-dir --break-system-packages \
+        pathlib \
+        numpy \
+        plotly \
+        gmsh==4.11.1 \
+        optuna==4.0.0 \
+        SQLAlchemy==1.4.44 \
+        matplotlib \
+        click \
+        pydrake
+        
+        
+    echo ">>> Cloning SOFA plugins..."
+    mkdir -p /Repos/Code/sofa/plugins
+    cd /Repos/Code
+
+    git clone -b v24.12 https://github.com/sofa-framework/sofa.git sofa/src
+    cd /Repos/Code/sofa/plugins
+    git clone -b v24.12 https://github.com/sofa-framework/SofaPython3.git
+    #git clone -b MagnetEffector_V2 https://github.com/CarlosRosel/SoftRobots.git
+    #git clone -b MagnetEffector_V2 https://github.com/CarlosRosel/SoftRobots.Inverse.git
+    git clone https://github.com/SofaDefrost/STLIB.git
+
+    echo ">>> Setting up build directory..."
+    mkdir -p /Repos/Code/sofa/build
+    cd /Repos/Code/sofa/build
+
+
+    echo ">>> Configuring cmake..."
+
+    cmake ../src \
+        -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=/usr/bin/gcc-11 \
+        -DCMAKE_CXX_COMPILER=/usr/bin/g++-11 \
+        -DPYTHON_EXECUTABLE=$(which python3) \
+        -DSOFA_ENABLE_SOFAPYTHON3=ON \
+        -DSOFA_ENABLE_PLUGIN_SoftRobots=ON \
+        -DSOFA_ENABLE_PLUGIN_SoftRobots.Inverse=ON \
+        -DSOFA_ENABLE_PLUGIN_STLIB=ON \
+        -DSOFA_INSTALL_DEPENDENCIES=ON\
+        -DSOFA_EXTERNAL_DIRECTORIES="/Repos/Code/sofa/plugins/SofaPython3;/Repos/Code/sofa/plugins/SoftRobots;/Repos/Code/sofa/plugins/SoftRobots.Inverse;/Repos/Code/sofa/plugins/STLIB" \
+        -DCMAKE_INSTALL_PREFIX=./install
+
+    ninja
+    ninja install
+
+%environment
+    export PATH=/Repos/Code/sofa/build/install/bin:$PATH
+    export PYTHONPATH=/Repos/Code/sofa/build/install/plugins/STLIB/lib/python3/site-packages:$PYTHONPATH
+    export PYTHONPATH=/Repos/Code/sofa/build/install/plugins/SofaPython3/lib/python3/site-packages:$PYTHONPATH
+    export LANG en_US.UTF-8
+    export LANGUAGE en_US:en
+    export LC_ALL en.US.UTF-8
+ 

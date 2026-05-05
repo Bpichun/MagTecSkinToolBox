@@ -51,15 +51,15 @@ class Config(GmshDesignOptimization):
         self.BoxTolerance = 0.17
         self.indenterRadius = 2
 
-        
+        # =================== Variables to optimize ===================
         # --- Magnet density ---
-        self.MagnetDensity_x = 0.031
-        self.MagnetDensity_y = 0.0135
-        self.MagnetGridOrientation = 0  
+        self.MagnetDensity_x = 0.010235180420099434
+        self.MagnetDensity_y = 0.02098742973240317
+        self.MagnetGridOrientation = 9.05961203119399  
         # self.delta_x =0
         # self.delta_y = 4
-        self.alpha_x = 0.4
-        self.alpha_y = 0.3
+        self.alpha_x = 0.10902638124836017
+        self.alpha_y = -0.017031000848584865
 
         self.spacing_x = np.sqrt(1.0 / self.MagnetDensity_x)
         self.spacing_y = np.sqrt(1.0 / self.MagnetDensity_y)

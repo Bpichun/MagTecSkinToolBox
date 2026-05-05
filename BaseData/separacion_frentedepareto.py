@@ -1,25 +1,26 @@
+"""
+Created on Tue Apr 21 09:29:11 2026
+
+@author: benjamin
+"""
 import optuna
 from optuna.storages import JournalStorage
 from optuna.storages.journal import JournalFileBackend
 import plotly.graph_objects as go
 import os
 
-# =========================
-# Cargar almacenamiento
-# =========================
-# file_path = "MagneticSkin_optuna_evolutionary.log"
 
 
-file_path = "MagneticSkin_optuna_evolutionary_10000_1_dividid_ensors.log"
+# Path to the Optuna journal file
+file_path = "MagneticSkin_optuna_evolutionary.log"
 
+# Initialize storage
 storage_backend = JournalFileBackend(file_path)
 storage = JournalStorage(storage_backend)
 
-# Obtener estudios disponibles
 all_studies = optuna.study.get_all_study_summaries(storage=storage)
 studies_names = [s.study_name for s in all_studies]
 
-print(f"Estudios encontrados en el archivo: {studies_names}")
 
 if len(studies_names) == 0:
     print("No hay estudios en el archivo.")
@@ -28,7 +29,7 @@ if len(studies_names) == 0:
 study_name_target = studies_names[0]
 
 # =========================
-# Cargar estudio
+# Load 
 # =========================
 try:
     study = optuna.load_study(
@@ -36,16 +37,15 @@ try:
         storage=storage
     )
 
-    print(f"Estudio '{study_name_target}' cargado exitosamente.")
-    print(f"Número total de trials: {len(study.trials)}")
+    print(f"Study '{study_name_target}' successfully loaded..")
+    print(f"Total number of trials: {len(study.trials)}")
 
 except KeyError:
-    print(f"Error: El estudio '{study_name_target}' no se encontró.")
+    print(f"Error: Study '{study_name_target}' was not found.")
     exit()
 
-# =========================
-# Separar Pareto vs dominados
-# =========================
+
+# Extract Pareto front trials
 pareto_trials = study.best_trials
 pareto_numbers = set(t.number for t in pareto_trials)
 
@@ -54,15 +54,19 @@ dominated_points = []
 
 for t in study.trials:
     if t.values is None:
-        continue  # evitar trials incompletos
+        continue  
 
     if t.number in pareto_numbers:
         pareto_points.append(t.values)
     else:
         dominated_points.append(t.values)
 
-print(f"Puntos en el frente de Pareto: {len(pareto_points)}")
-print(f"Puntos dominados: {len(dominated_points)}")
+print(f"Number of Pareto-optimal points: {len(pareto_points)}")
+print(f"Number of dominated points: {len(dominated_points)}")
+
+# =========================
+# Visualization
+# =========================
 
 
 fig = go.Figure()
