@@ -12,18 +12,13 @@ import os
 import logging
 from typing import List, Tuple
 
-# ---------------------------
-# Logging configuration
-# ---------------------------
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
-# ---------------------------
-# Load study
-# ---------------------------
 def load_study_from_file(file_path: str, study_name: str = None) -> optuna.study.Study:
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Log file not found: {file_path}")
+        raise FileNotFoundError(f"File not found: {file_path}")
 
     storage = JournalStorage(JournalFileBackend(file_path))
     studies = optuna.study.get_all_study_summaries(storage=storage)
@@ -46,9 +41,6 @@ def load_study_from_file(file_path: str, study_name: str = None) -> optuna.study
     return study
 
 
-# ---------------------------
-# Extract Pareto front
-# ---------------------------
 def extract_pareto_points(study: optuna.study.Study) -> Tuple[List[List[float]], List[List[float]]]:
     pareto_trials = study.best_trials
     pareto_ids = {t.number for t in pareto_trials}
@@ -82,9 +74,6 @@ def extract_pareto_points(study: optuna.study.Study) -> Tuple[List[List[float]],
     return pareto_points, dominated_points
 
 
-# ---------------------------
-# Plot (supports 2D or 3D)
-# ---------------------------
 def plot_pareto(pareto_points, dominated_points, study_name: str, output_file: str):
     dim = len(pareto_points[0])
 
@@ -94,7 +83,6 @@ def plot_pareto(pareto_points, dominated_points, study_name: str, output_file: s
         return list(zip(*points)) if points else ([], [], [])
 
     if dim == 2:
-        # 2D case
         if dominated_points:
             x, y = zip(*dominated_points)
             fig.add_trace(go.Scatter(
@@ -120,7 +108,6 @@ def plot_pareto(pareto_points, dominated_points, study_name: str, output_file: s
         )
 
     elif dim == 3:
-        # 3D case
         if dominated_points:
             x, y, z = zip(*dominated_points)
             fig.add_trace(go.Scatter3d(
