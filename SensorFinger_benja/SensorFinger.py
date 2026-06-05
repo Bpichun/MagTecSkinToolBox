@@ -9,6 +9,7 @@ __date__ = "Oct 28 2022"
 
 import math
 import numpy as np
+import Sofa
 
 from BaseFitnessEvaluationController import BaseFitnessEvaluationController
 
@@ -97,45 +98,65 @@ class FitnessEvaluationController(BaseFitnessEvaluationController):
 
 def createScene(rootNode, config):
     
-    ###############################
-    ### Import required plugins ###
-    ###############################
-    rootNode.addObject("RequiredPlugin", name="SoftRobots")
-    rootNode.addObject("RequiredPlugin", name="SofaSparseSolver")
-    rootNode.addObject("RequiredPlugin", name="SofaPreconditioner")
-    rootNode.addObject("RequiredPlugin", name="SofaPython3")
-    rootNode.addObject('RequiredPlugin', name='SofaOpenglVisual')
-    rootNode.addObject('RequiredPlugin', name="SofaMiscCollision")
-    rootNode.addObject("RequiredPlugin", name="SofaBoundaryCondition")
-    rootNode.addObject("RequiredPlugin", name="SofaConstraint")
-    rootNode.addObject("RequiredPlugin", name="SofaEngine")
-    rootNode.addObject('RequiredPlugin', name='SofaImplicitOdeSolver')
-    rootNode.addObject('RequiredPlugin', name='SofaLoader')
-    rootNode.addObject('RequiredPlugin', name="SofaSimpleFem")
-    rootNode.addObject('RequiredPlugin', name="SofaDeformable")
-    rootNode.addObject('RequiredPlugin', name="SofaGeneralLoader")
 
-    ##############################
-    ### Visualization settings ###
-    ##############################
-    rootNode.addObject('LightManager')
-    rootNode.addObject('PositionalLight', name="light1", color="0.8 0.8 0.8", position="0 60 50")                
-    rootNode.addObject('PositionalLight', name="light2", color="0.8 0.8 0.8", position="0 -60 -50") 
+    
+    # rootNode.addObject('RequiredPlugin', name='Sofa.Component.Visual')
+    rootNode.addObject('RequiredPlugin', pluginName='SofaPython3 SoftRobots SoftRobots.Inverse')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Visual')
     rootNode.addObject('VisualStyle', displayFlags='hideWireframe showBehaviorModels hideCollisionModels hideBoundingCollisionModels showForceFields showInteractionForceFields')
+    rootNode.addObject('RequiredPlugin', name="ArticulatedSystemPlugin")
+    rootNode.findData('gravity').value = [0, 0, -9810]
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.ODESolver.Backward')
+
+
+
+    rootNode.addObject("DefaultVisualManagerLoop")
+
+
+    rootNode.findData('dt').value = 0.02
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.AnimationLoop')
+    rootNode.addObject('FreeMotionAnimationLoop')
+    #rootNode.addObject('QPInverseProblemSolver', printLog='1', epsilon="1e-1", maxIterations="1000", tolerance="1e-5")
+    #rootNode.addObject('QPInverseProblemSolver', printLog=False, epsilon="0.0001", maxIterations="1000", tolerance="1e-5")
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Constraint.Lagrangian.Solver')
+
+    rootNode.addObject('GenericConstraintSolver', tolerance="1e-12", maxIterations="10000")
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Setting')
+    #rootNode.addObject('BackgroundSetting', color='0 0.168627 0.211765')
+    rootNode.addObject('BackgroundSetting', color='0.85 0.85 0.85')
+    # root = Sofa.Core.Node()
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.LinearSolver.Direct')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Constraint.Lagrangian.Correction')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.IO.Mesh')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Topology.Container.Dynamic')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.StateContainer')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Mass')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.SolidMechanics.FEM.Elastic')
+    
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Engine.Select')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.SolidMechanics.Spring')
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Mapping.Linear')
+
+    rootNode.addObject('RequiredPlugin', name='Sofa.Component.Topology.Container.Constant')
+    rootNode.addObject('RequiredPlugin', name='Sofa.GL.Component.Rendering3D')
+
+
 
     ###########################
     ### Simulation settings ###
     ###########################
-    rootNode.addObject('FreeMotionAnimationLoop')
-    rootNode.addObject('GenericConstraintSolver', tolerance="1e-12", maxIterations="10000")
+    # rootNode.addObject('FreeMotionAnimationLoop')
+    # rootNode.addObject('GenericConstraintSolver', tolerance="1e-12", maxIterations="10000")
 
-    rootNode.findData('gravity').value = [0, 0, -9810] 
-    rootNode.findData('dt').value = 0.01
+    # rootNode.findData('gravity').value = [0, 0, -9810] 
+    # rootNode.findData('dt').value = 0.01
 
     model = rootNode.addChild('model')
-    model.addObject('EulerImplicitSolver', name='odesolver', firstOrder=0, rayleighMass=0.1,  rayleighStiffness=0.1)
-    model.addObject('SparseLDLSolver', name='precond', template = "CompressedRowSparseMatrixd")
+    model.addObject('EulerImplicitSolver', name='odesolver', firstOrder=0, rayleighMass=0.1, rayleighStiffness=0.1)
+    model.addObject('SparseLDLSolver', name='precond', template='CompressedRowSparseMatrixd')
+
     model.addObject('GenericConstraintCorrection')
+
 
     ##################
     ### Load model ###
@@ -183,7 +204,10 @@ def createScene(rootNode, config):
                                     WallThickness = config.WallThickness, CenterThickness = config.CenterThickness,
                                     CavityCorkThickness = config.CavityCorkThickness, PlateauHeight = config.PlateauHeight, 
                                     Z_translation = Z_translation, RefineAroundCavities = config.RefineAroundCavities))
-        CurrentCavity.addObject('Mesh', name='topology', src='@MeshLoader')
+        # CurrentCavity.addObject('Mesh', name='topology', src='@MeshLoader')
+        CurrentCavity.addObject('MeshTopology', name='topology', src='@MeshLoader')
+
+
         CurrentCavity.addObject('MechanicalObject', src="@topology")
         CurrentCavity.addObject('SurfacePressureConstraint', template='Vec3d', triangles='@topology.triangles')
         CurrentCavity.addObject('BarycentricMapping', name="Mapping", mapForces="false", mapMasses="false")

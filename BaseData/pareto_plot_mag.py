@@ -5,7 +5,7 @@ from optuna.visualization import plot_pareto_front
 import os
 
 
-file_path = "MagneticSkin_optuna_evolutionary.log" 
+file_path = "SensorFinger_0_optuna_evolutionary_testnuevo14mb.log" 
 
 storage_backend = JournalFileBackend(file_path)
 storage = JournalStorage(storage_backend)
@@ -31,9 +31,10 @@ except KeyError:
 
 
 if study is not None:
+    print(study.metric_names)
     fig = plot_pareto_front(
         study,
-        target_names=["Objetivo 1", "Objetivo 2", "Objetivo 3"], # Etiquetas personalizables para los ejes
+        target_names=["Objetivo 1", "Objetivo 2"], # Etiquetas personalizables para los ejes
         include_dominated_trials=True # True: Muestra todos los puntos. False: Solo el frente.
     )
 

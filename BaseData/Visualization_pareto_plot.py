@@ -142,11 +142,8 @@ def plot_pareto(pareto_points, dominated_points, study_name: str, output_file: s
     logging.info(f"Plot saved to: {os.path.abspath(output_file)}")
 
 
-# ---------------------------
-# Main
-# ---------------------------
 def main():
-    file_path = "MagneticSkin_optuna_evolutionary.log"
+    file_path = "SensorFinger_0_optuna_evolutionary_testnuevo14mb.log"
 
     try:
         study = load_study_from_file(file_path)
