@@ -143,7 +143,7 @@ def plot_pareto(pareto_points, dominated_points, study_name: str, output_file: s
 
 
 def main():
-    file_path = "SensorFinger_0_optuna_evolutionary_testnuevo14mb.log"
+    file_path = "SensorFinger_10_optuna_evolutionary.log"
 
     try:
         study = load_study_from_file(file_path)

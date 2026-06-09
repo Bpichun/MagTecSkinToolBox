@@ -34,8 +34,8 @@ if study is not None:
     print(study.metric_names)
     fig = plot_pareto_front(
         study,
-        target_names=["Objetivo 1", "Objetivo 2"], # Etiquetas personalizables para los ejes
-        include_dominated_trials=True # True: Muestra todos los puntos. False: Solo el frente.
+        target_names=["Objetivo 1", "Objetivo 2"], 
+        include_dominated_trials=True
     )
 
     fig.update_layout(
